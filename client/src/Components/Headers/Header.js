@@ -1,4 +1,7 @@
-import { NavLink } from 'react-router-dom'
+import {
+    NavLink,
+    useHistory
+ } from 'react-router-dom'
 
 import {
     Box,
@@ -8,10 +11,26 @@ import {
     Toolbar
 } from '@mui/material'
 
+import {
+    useSelector,
+    useDispatch
+} from 'react-redux'
+
+import { userSet } from '../../Redux/Slices/userSlice'
 import logo from '../../Assets/logo-placeholder.png'
 
 function Header() {
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user.entities)
 
+    function handleLogout() {
+        fetch('/logout', { 
+            method: "DELETE"
+        });
+        dispatch(userSet(false));
+        history.push('/login');
+    }
 
     return (
         <Box
@@ -20,7 +39,7 @@ function Header() {
             <AppBar
                 color="transparent"
                 position="static"
-                elevation="0"
+                elevation={0}
             >
                 <Toolbar>
                     <Box
@@ -51,21 +70,54 @@ function Header() {
                     >
                         Budgeteer
                     </Typography>
-                    <Button
-                        component={NavLink}
-                        variant="text"
-                        to="/login"
-                    >
-                        <Typography
-                            variant="h6"
-                            sx={{
-                                fontWeight: 'medium',
-                                color: 'text.primary'
-                            }}
+                    {user ?
+                        (<>
+                        <Button
+                            component={NavLink}
+                            variant="text"
+                            to={`/${user.username}`}
                         >
-                            Login
-                        </Typography>
-                    </Button>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: 'medium',
+                                    color: 'text.primary'
+                                }}
+                            >
+                                {user.username}
+                            </Typography>
+                        </Button>
+                        <Button
+                            variant="text"
+                            onClick={handleLogout}
+                        >
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: 'medium',
+                                    color: 'text.primary'
+                                }}
+                            >
+                                Logout
+                            </Typography>
+                        </Button>
+                        </>)
+                        :
+                        (<Button
+                            component={NavLink}
+                            variant="text"
+                            to="/login"
+                        >
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: 'medium',
+                                    color: 'text.primary'
+                                }}
+                            >
+                                Login
+                            </Typography>
+                        </Button>)}
                 </Toolbar>
             </AppBar>
         </Box>
