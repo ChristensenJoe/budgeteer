@@ -1,40 +1,69 @@
 import {
+  useEffect
+} from 'react'
+
+import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  useHistory
 } from 'react-router-dom'
 
-import { 
+import {
   ThemeProvider
 } from '@mui/material'
+
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
+
+import { fetchUser } from './Redux/Slices/userSlice'
 
 import { theme as lightmode } from './Themes/Lightmode'
 import UserRoutes from './Components/Routes/UserRoutes'
 import Header from './Components/Headers/Header'
+import Login from './Pages/Login'
+import Signup from './Pages/Signup'
 
 function App() {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.entities);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch])
+
+  console.log(user)
+
   return (
     <ThemeProvider theme={lightmode}>
-      <Router>
         <Header />
         <Switch>
           <Route path="/login">
-            <h1>Login</h1>
+            <Login />
           </Route>
           <Route path="/signup">
-            <h1>Signup</h1>
+            <Signup />
           </Route>
-          <Route path="/settings">
-            <h1>Settings</h1>
-          </Route>
-          <Route path="/:username">
-            <UserRoutes />
-          </Route>
+          {
+            user ?
+            (<>
+              <Route path="/settings">
+                <h1>Settings</h1>
+              </Route>
+              <Route path="/:username">
+                <UserRoutes />
+              </Route>
+            </>)
+            :
+            history.push("/")
+          }
           <Route exact path="/">
             <h1>Homepage</h1>
           </Route>
         </Switch>
-      </Router>
     </ThemeProvider>
   );
 }
