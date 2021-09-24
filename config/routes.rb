@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
 
+  resources :users, only: [:update] do
+    resources :categories
+    resources :payments, only: [:index, :create, :destroy]
+    get '/payments/recent', to: 'payments#recent'
+  end
+
+
   post '/signup', to: 'users#create'
   get '/me', to: 'users#show'
 

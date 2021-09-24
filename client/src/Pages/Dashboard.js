@@ -4,17 +4,16 @@ import {
 
 import {
     Container,
+    Grid,
     styled,
-    Paper
+    Box
 } from '@mui/material'
 
-import Masonry from '@mui/lab/Masonry'
-import MasonryItem from '@mui/lab/MasonryItem'
-import UserBalanceInfo from '../Components/Paper/UserBalanceInfo'
-import UserCategoriesInfo from '../Components/Paper/UserCategoriesInfo'
-import UserRecentTransactionsInfo from '../Components/Paper/UserRecentTransactionsInfo'
+import UserBalanceInfoContainer from '../Components/Containers/UserBalanceInfoContainer'
+import UserCategoriesInfoContainer from '../Components/Containers/UserCategoriesInfoContainer'
+import UserRecentTransactionsInfoContainer from '../Components/Containers/UserRecentTransactionsInfoContainer'
 
-const InfoContainer = styled(Paper)(({ theme }) => ({
+const InfoContainer = styled(Box)(({ theme }) => ({
     border: '2px solid',
     borderColor: theme.palette.primary.main
 }))
@@ -23,42 +22,72 @@ function Dashboard() {
     const { username } = useParams();
 
     return (
-        <Container>
-            <Masonry
-                columns={{ sm: 1, md: 2 }}
+        <Container
+            sx={{
+                marginTop: '20px'
+            }}
+        >
+            <Grid
+                container
                 spacing={5}
             >
-                <MasonryItem>
-                    <InfoContainer
-                        sx={{
-                            height: '600px',
-                            width: '100%'
-                        }}
+                <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={6}
+                >
+                    <Grid
+                        container
+                        spacing={5}
                     >
-                        <UserBalanceInfo />
-                    </InfoContainer>
-                </MasonryItem>
-                <MasonryItem>
+                        <Grid
+                            item
+                            xs={12}
+                        >
+                            <InfoContainer
+                                borderRadius={12}
+                                sx={{
+                                    height: '100%',
+                                    width: '100%'
+                                }}
+                            >
+                                <UserBalanceInfoContainer />
+                            </InfoContainer>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                        >
+                            <InfoContainer
+                                borderRadius={12}
+                                sx={{
+                                    height: '400px',
+                                    width: '100%'
+                                }}
+                            >
+                                <UserRecentTransactionsInfoContainer />
+                            </InfoContainer>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={6}
+                >
                     <InfoContainer
+                        borderRadius={12}
                         sx={{
                             height: '1200px',
                             width: '100%'
                         }}
                     >
-                        <UserCategoriesInfo />
+                        <UserCategoriesInfoContainer />
                     </InfoContainer>
-                </MasonryItem>
-                <MasonryItem>
-                    <InfoContainer
-                        sx={{
-                            height: '400px',
-                            width: '100%'
-                        }}
-                    >
-                        <UserRecentTransactionsInfo />
-                    </InfoContainer>
-                </MasonryItem>
-            </Masonry>
+                </Grid>
+            </Grid>
         </Container>
     )
 }
