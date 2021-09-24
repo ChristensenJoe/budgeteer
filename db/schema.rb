@@ -10,10 +10,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_23_163412) do
+ActiveRecord::Schema.define(version: 2021_09_24_162610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.decimal "balance"
+    t.decimal "percentage"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "category_payments", force: :cascade do |t|
+    t.bigint "category_id", null: false
+    t.bigint "payment_id", null: false
+    t.boolean "is_primary"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_category_payments_on_category_id"
+    t.index ["payment_id"], name: "index_category_payments_on_payment_id"
+  end
+
+  create_table "paychecks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "amount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_paychecks_on_user_id"
+  end
+
+  create_table "paydates", force: :cascade do |t|
+    t.bigint "paycheck_id", null: false
+    t.date "paydate"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["paycheck_id"], name: "index_paydates_on_paycheck_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.decimal "amount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username"
@@ -21,6 +65,12 @@ ActiveRecord::Schema.define(version: 2021_09_23_163412) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "unallocated_balance"
   end
 
+  add_foreign_key "categories", "users"
+  add_foreign_key "category_payments", "categories"
+  add_foreign_key "category_payments", "payments"
+  add_foreign_key "paychecks", "users"
+  add_foreign_key "paydates", "paychecks"
 end
