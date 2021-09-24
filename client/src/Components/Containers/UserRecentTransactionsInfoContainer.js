@@ -21,7 +21,11 @@ function UserRecentTransactionsInfoContainer() {
                 sx={{
                     textAlign: 'center',
                     fontWeight: 600,
-                    fontSize: '2.3rem'
+                    fontSize: {
+                        xs: '2.3rem',
+                        md: '1.8rem',
+                        lg: '2.3rem'
+                    }
                 }}
             >
                 Recent Transactions

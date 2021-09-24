@@ -3,10 +3,9 @@ import {
 } from 'react'
 
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  useHistory
+  //useHistory
 } from 'react-router-dom'
 
 import {
@@ -27,15 +26,13 @@ import Login from './Pages/Login'
 import Signup from './Pages/Signup'
 
 function App() {
-  const history = useHistory();
+  //const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.entities);
 
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch])
-
-  console.log(user)
 
   return (
     <ThemeProvider theme={lightmode}>
@@ -58,7 +55,8 @@ function App() {
               </Route>
             </>)
             :
-            history.push("/")
+            null
+            //history.push("/")
           }
           <Route exact path="/">
             <h1>Homepage</h1>

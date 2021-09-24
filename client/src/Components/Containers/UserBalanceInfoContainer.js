@@ -10,7 +10,6 @@ import {
 
 function UserBalanceInfoContainer() {
     const user = useSelector((state) => state.user.entities);
-    console.log(user)
 
     return (
         <Stack
@@ -41,9 +40,9 @@ function UserBalanceInfoContainer() {
                         fontWeight: 600,
                         fontSize: {
                             xs: '1.95rem',
-                            sm: '2.2rem',
-                            md: '1.6rem',
-                            lg: '2.3rem'
+                            sm: '2.15rem',
+                            md: '1.15rem',
+                            lg: '1.8rem'
                         }
                     }}
                 >
@@ -60,9 +59,9 @@ function UserBalanceInfoContainer() {
                         color: 'primary.main',
                         fontSize: {
                             xs: '1.95rem',
-                            sm: '2.2rem',
-                            md: '1.6rem',
-                            lg: '2.3rem'
+                            sm: '2.15rem',
+                            md: '1.15rem',
+                            lg: '1.8rem'
                         }
                     }}
                 >
@@ -120,7 +119,7 @@ function UserBalanceInfoContainer() {
                         }
                     }}
                 >
-                    ${user.unallocated_balance}
+                    {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'}).format(user.unallocated_balance)}
                 </Typography>
             </Stack>
             <Box
@@ -220,7 +219,7 @@ function UserBalanceInfoContainer() {
                         }
                     }}
                 >
-                    ${user.paycheck.amount}
+                    {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'}).format(user.paycheck.amount)}
                 </Typography>
             </Stack>
         </Stack>
