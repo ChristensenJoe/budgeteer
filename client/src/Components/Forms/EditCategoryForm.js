@@ -1,6 +1,15 @@
 import { useState } from 'react'
 
 import {
+    useHistory
+} from 'react-router-dom'
+
+import {
+    useDispatch,
+    useSelector
+} from 'react-redux'
+
+import {
     DialogContent,
     DialogActions,
     TextField,
@@ -9,10 +18,19 @@ import {
     Typography
 } from "@mui/material"
 
+import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
+
 function EditCategoryForm({ setIsOpen, category, setCategory }) {
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.entities);
+
     const [formData, setFormData] = useState({
         name: category.name,
         percentage: category.percentage
+    })
+    const [errorData, setErrorData] = useState({
+        name: ""
     })
 
     function handleChange(e) {
@@ -22,9 +40,47 @@ function EditCategoryForm({ setIsOpen, category, setCategory }) {
         }))
     }
 
-    function handleSubmit(e) {
-        e.preventDefault()
-        setIsOpen(false);
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        setErrorData({
+            name: ""
+        })
+
+        const response = await fetch(`/users/${user.id}/categories/${category.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            response.json()
+                .then(newCategory => {
+                    const usernameRoute = user.username.split("").join("")
+                    const routeName = newCategory.name.split(" ").join("-").toLowerCase();
+
+                    dispatch(categoriesUpdated(newCategory));
+                    setCategory(newCategory);
+                    setIsOpen(false);
+                    history.push({
+                        pathname: `/${usernameRoute}/${routeName}`,
+                        state: newCategory.id
+                    })
+                });
+        }
+        else {
+            response.json()
+                .then(data => {
+                    data.errors.forEach((error) => {
+                        setErrorData((errorData) => ({
+                            ...errorData,
+                            [error.split(" ")[0].toLowerCase()]: error
+                        }));
+                    });
+                });
+        }
     }
 
     return (
@@ -45,6 +101,8 @@ function EditCategoryForm({ setIsOpen, category, setCategory }) {
                         label="Category Name"
                         name="name"
                         value={formData.name}
+                        error={!!errorData.name}
+                        helperText={errorData.name}
                         onChange={handleChange}
                     />
                     <TextField

@@ -20,12 +20,12 @@ const InfoContainer = styled(Box)(({ theme }) => ({
 }))
 
 function Dashboard() {
-    //const { username } = useParams();
 
     return (
         <Container
             sx={{
-                marginTop: '20px'
+                marginTop: '20px',
+                marginBottom: '20px'
             }}
         >
             <Grid
@@ -81,7 +81,7 @@ function Dashboard() {
                     <InfoContainer
                         borderRadius={12}
                         sx={{
-                            height: '1200px',
+                            minHeight: '1000px',
                             width: '100%'
                         }}
                     >

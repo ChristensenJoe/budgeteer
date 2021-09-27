@@ -20,6 +20,10 @@ const categoriesSlice = createSlice({
     categoriesRemoved(state, action) {
       const index = state.entities.findIndex((category) => category === action.payload)
       state.entities.splice(index, 1)
+    },
+    categoriesUpdated(state, action) {
+      const index = state.entities.findIndex((category) => category.id === action.payload.id)
+      state.entities.splice(index, 1, action.payload)
     }
   },
   extraReducers: {
@@ -41,6 +45,6 @@ const categoriesSlice = createSlice({
   }
 });
 
-export const { categoriesAdded, categoriesRemoved } = categoriesSlice.actions;
+export const { categoriesAdded, categoriesRemoved, categoriesUpdated } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

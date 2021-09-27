@@ -16,7 +16,6 @@ import {
     alpha
 } from '@mui/material'
 
-import { fetchCategories } from '../../Redux/Slices/categoriesSlice'
 
 import UserCategoriesItem from '../Items/UserCategoriesItem'
 import NewCategoryDialog from '../Dialogs/NewCategoryDialog'
@@ -27,10 +26,6 @@ function UserCategoriesInfoContainer() {
     const categories = useSelector((state) => state.categories.entities)
 
     const [isOpen, setIsOpen] = useState(false)
-
-    useEffect(() => {
-        dispatch(fetchCategories(user.id))
-    }, [dispatch, user.id])
 
 
     return (

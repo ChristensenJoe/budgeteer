@@ -78,7 +78,7 @@ function Header() {
                         <Button
                             component={NavLink}
                             variant="text"
-                            to={`/${user.username}`}
+                            to={`/${user.username.split(" ").join("")}`}
                             sx={{
                                 height: '90px'
                             }}

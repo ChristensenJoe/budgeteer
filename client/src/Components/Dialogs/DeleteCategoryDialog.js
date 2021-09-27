@@ -1,4 +1,13 @@
 import {
+    useHistory
+} from 'react-router-dom'
+
+import {
+    useDispatch,
+    useSelector
+} from 'react-redux'
+
+import {
     Dialog,
     DialogTitle,
     Typography,
@@ -7,10 +16,22 @@ import {
     DialogContent
 } from "@mui/material"
 
+import { categoriesRemoved } from '../../Redux/Slices/categoriesSlice'
+
 function DeleteCategoryDialog({ isOpen, setIsOpen, category }) {
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.entities);
 
     function handleSubmit() {
-        setIsOpen((isOpen) => !isOpen)
+        fetch(`/users/${user.id}/categories/${category.id}`, {
+            method: "DELETE"
+        });
+        
+        dispatch(categoriesRemoved(category));
+        history.push(`/${user.username.split(" ").join("")}`)
+        setIsOpen((isOpen) => !isOpen);
+
     }
 
     return (
