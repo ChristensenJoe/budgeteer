@@ -10,7 +10,7 @@ import {
 
 function UserBalanceInfoContainer() {
     const user = useSelector((state) => state.user.entities);
-
+console.log(user)
     return (
         <Stack
             justifyContent="center"

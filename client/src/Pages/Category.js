@@ -38,7 +38,6 @@ function Category() {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isNewTransactionOpen, setIsNewTransactionOpen] = useState(false);
 
-
     useEffect(() => {
         fetch(`/users/${user.id}/categories/${location.state}`)
             .then(res => res.json())
@@ -214,6 +213,7 @@ function Category() {
                         </Stack>
                         <CategoryTable
                             category={category}
+                            setCategory={setCategory}
                         />
                     </Stack>
                 </Box>

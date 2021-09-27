@@ -13,14 +13,20 @@ class PaymentsController < ApplicationController
 
         params[:categories].map do |category_name|
             category = @user.categories.find_by(name: category_name)
-            category.payments.create!(payments_params)
+            category.category_payments.create!(payment_id: primary_payment.id, is_primary: false)
         end
 
         render json: primary_payment, status: :created
     end
 
     def destroy
-
+        payment = @user.payments.find(params[:id])
+        category = payment.category_payments.find_by(is_primary: true).category
+        old_balance = category.balance
+        category.update!(balance: old_balance - payment.amount)
+        
+        payment.destroy
+        head :no_content
     end
 
     private

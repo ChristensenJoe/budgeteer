@@ -1,4 +1,6 @@
-import { 
+import { useState } from 'react'
+
+import {
     TableContainer,
     Table,
     TableBody,
@@ -7,67 +9,101 @@ import {
     TableRow,
     Paper,
     useTheme,
-    useMediaQuery
+    useMediaQuery,
+    IconButton
 } from '@mui/material'
 
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-function CategoryTable({category}) {
+import DeleteTransactionDialog from '../Dialogs/DeleteTransactionDialog'
+
+function CategoryTable({ setCategory, category }) {
     const theme = useTheme();
     const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-    return (
-        <TableContainer
-            component={Paper}
-            sx={{
-                width: '95%'
-            }}
-        >
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>
-                            Name
-                        </TableCell>
-                        {!smallScreen && <TableCell>
-                            Description
-                        </TableCell>}
-                        <TableCell>
-                            Amount
-                        </TableCell>
-                        <TableCell>
-                            Date
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        category.payments.map((payment) => {
-                            const date = new Date(payment.date)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [selectedTransaction, setSelectedTransaction] = useState([]);
 
-                            return (
-                            <TableRow
-                                key={payment.id}
-                            >
-                                <TableCell>
-                                    {payment.name}
-                                </TableCell>
-                                {!smallScreen && <TableCell>
-                                    {payment.description}
-                                </TableCell>}
-                                <TableCell>
-                                    {
-                                        Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'}).format(payment.amount)
-                                    }
-                                </TableCell>
-                                <TableCell>
-                                    {`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`}
-                                </TableCell>
-                            </TableRow>
-                        )})
-                    }
-                </TableBody>
-            </Table>
-        </TableContainer>
+    function handleDelete(transaction) {
+        setSelectedTransaction(transaction)
+        setIsDeleteOpen(isDeleteOpen => !isDeleteOpen)
+    }
+
+    return (
+        <>
+            <TableContainer
+                component={Paper}
+                sx={{
+                    width: '95%'
+                }}
+            >
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>
+                                Name
+                            </TableCell>
+                            {!smallScreen && <TableCell>
+                                Description
+                            </TableCell>}
+                            <TableCell>
+                                Amount
+                            </TableCell>
+                            <TableCell>
+                                Date
+                            </TableCell>
+                            <TableCell>
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            category.payments.map((payment) => {
+                                const date = new Date(payment.date)
+
+                                return (
+                                    <TableRow
+                                        key={payment.id}
+                                    >
+                                        <TableCell>
+                                            {payment.name}
+                                        </TableCell>
+                                        {!smallScreen && <TableCell>
+                                            {payment.description}
+                                        </TableCell>}
+                                        <TableCell>
+                                            {
+                                                Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(payment.amount)
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`}
+                                        </TableCell>
+                                        <TableCell>
+                                            <IconButton
+                                                onClick={() => {
+                                                    handleDelete(payment)
+                                                }}
+                                            >
+                                                <DeleteOutlineIcon
+
+                                                />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })
+                        }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <DeleteTransactionDialog
+                isOpen={isDeleteOpen}
+                setIsOpen={setIsDeleteOpen}
+                setCategory={setCategory}
+                transaction={selectedTransaction}
+            />
+        </>
     )
 }
 
