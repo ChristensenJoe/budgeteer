@@ -1,2 +1,39 @@
 class PaymentsController < ApplicationController
+    rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
+    before_action :find_user
+
+    def create
+        primary_category = @user.categories.find_by(name: params[:primary_category])
+        primary_payment = primary_category.payments.create!(payments_params)
+
+        primary_category.category_payments.find_by(payment_id: primary_payment.id).update!(is_primary: true);
+
+        old_balance = primary_category.balance
+        primary_category.update!(balance: old_balance + params[:amount].to_d)
+
+        params[:categories].map do |category_name|
+            category = @user.categories.find_by(name: category_name)
+            category.payments.create!(payments_params)
+        end
+
+        render json: primary_payment, status: :created
+    end
+
+    def destroy
+
+    end
+
+    private
+
+    def payments_params
+        params.permit(:name, :description, :amount)
+    end
+
+    def find_user
+        @user = User.find(params[:user_id])
+    end
+
+    def not_found_response
+        render json: { errors: "Category not found" }, status: :not_found
+      end
 end

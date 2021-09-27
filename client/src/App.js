@@ -3,10 +3,9 @@ import {
 } from 'react'
 
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  useHistory
+  //useHistory
 } from 'react-router-dom'
 
 import {
@@ -19,6 +18,7 @@ import {
 } from 'react-redux';
 
 import { fetchUser } from './Redux/Slices/userSlice'
+import { fetchCategories } from './Redux/Slices/categoriesSlice'
 
 import { theme as lightmode } from './Themes/Lightmode'
 import UserRoutes from './Components/Routes/UserRoutes'
@@ -27,28 +27,29 @@ import Login from './Pages/Login'
 import Signup from './Pages/Signup'
 
 function App() {
-  const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.entities);
-
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch])
 
-  console.log(user)
+  useEffect(() => {
+    user && dispatch(fetchCategories(user.id))
+  }, [dispatch, user])
 
+  
   return (
     <ThemeProvider theme={lightmode}>
-        <Header />
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/signup">
-            <Signup />
-          </Route>
-          {
-            user ?
+      <Header />
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/signup">
+          <Signup />
+        </Route>
+        {
+          user ?
             (<>
               <Route path="/settings">
                 <h1>Settings</h1>
@@ -58,12 +59,13 @@ function App() {
               </Route>
             </>)
             :
-            history.push("/")
-          }
-          <Route exact path="/">
-            <h1>Homepage</h1>
-          </Route>
-        </Switch>
+            null
+          //history.push("/")
+        }
+        <Route exact path="/">
+          <h1>Homepage</h1>
+        </Route>
+      </Switch>
     </ThemeProvider>
   );
 }

@@ -1,5 +1,5 @@
 import {
-    useParams
+    //useParams
 } from 'react-router-dom'
 
 import {
@@ -8,6 +8,7 @@ import {
     styled,
     Box
 } from '@mui/material'
+
 
 import UserBalanceInfoContainer from '../Components/Containers/UserBalanceInfoContainer'
 import UserCategoriesInfoContainer from '../Components/Containers/UserCategoriesInfoContainer'
@@ -19,12 +20,12 @@ const InfoContainer = styled(Box)(({ theme }) => ({
 }))
 
 function Dashboard() {
-    const { username } = useParams();
 
     return (
         <Container
             sx={{
-                marginTop: '20px'
+                marginTop: '20px',
+                marginBottom: '20px'
             }}
         >
             <Grid
@@ -35,7 +36,7 @@ function Dashboard() {
                     item
                     xs={12}
                     sm={12}
-                    md={6}
+                    md={5}
                 >
                     <Grid
                         container
@@ -75,12 +76,12 @@ function Dashboard() {
                     item
                     xs={12}
                     sm={12}
-                    md={6}
+                    md={7}
                 >
                     <InfoContainer
                         borderRadius={12}
                         sx={{
-                            height: '1200px',
+                            minHeight: '1000px',
                             width: '100%'
                         }}
                     >

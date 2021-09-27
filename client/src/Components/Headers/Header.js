@@ -34,7 +34,10 @@ function Header() {
 
     return (
         <Box
-            sx={{ flexGrow: 1 }}
+            sx={{ 
+                flexGrow: 1,
+                marginBottom: '20px'
+            }}
         >
             <AppBar
                 color="transparent"
@@ -75,7 +78,10 @@ function Header() {
                         <Button
                             component={NavLink}
                             variant="text"
-                            to={`/${user.username}`}
+                            to={`/${user.username.split(" ").join("")}`}
+                            sx={{
+                                height: '90px'
+                            }}
                         >
                             <Typography
                                 variant="h6"
@@ -90,6 +96,9 @@ function Header() {
                         <Button
                             variant="text"
                             onClick={handleLogout}
+                            sx={{
+                                height: '90px',
+                            }}
                         >
                             <Typography
                                 variant="h6"
