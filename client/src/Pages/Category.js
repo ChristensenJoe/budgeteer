@@ -16,26 +16,35 @@ import {
     Box,
     Stack,
     Typography,
-    Skeleton
+    Skeleton,
+    IconButton
 } from '@mui/material'
 
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 import CategoryTable from '../Components/Tables/CategoryTable'
+import DeleteCategoryDialog from '../Components/Dialogs/DeleteCategoryDialog'
+import EditCategoryDialog from '../Components/Dialogs/EditCategoryDialog'
 
 function Category() {
     const location = useLocation();
     const user = useSelector(state => state.user.entities)
 
     const [category, setCategory] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
 
     useEffect(() => {
         fetch(`/users/${user.id}/categories/${location.state}`)
             .then(res => res.json())
             .then(setCategory)
-    }, [])
+    }, [location.state, user.id])
 
 
     return (
+        <>
         <Container>
             {category ? <Box
                 sx={{
@@ -108,7 +117,7 @@ function Category() {
                         sx={{
                             width: '100%',
                             paddingTop: '10px',
-                            paddingBottom: '40px'
+                            paddingBottom: '10px'
                         }}
                     >
                         <Typography
@@ -139,6 +148,39 @@ function Category() {
                         >
                             {category.percentage * 100}%
                         </Typography>
+                    </Stack>
+                    <Stack
+                        direction="row"
+                        justifyContent="right"
+                        spacing={4}
+                        sx={{
+                            width: '100%',
+                            paddingBottom: '10px',
+                            paddingRight: '40px'
+                        }}
+                    >
+                        <IconButton
+                            size="large"
+                            onClick={() => {setIsEditOpen(isEditOpen => !isEditOpen)}}
+                        >
+                            <EditOutlinedIcon
+                                sx={{
+                                    height: '30px',
+                                    width: '30px'
+                                }}
+                            />
+                        </IconButton>
+                        <IconButton
+                            size="large"
+                            onClick={() => {setIsDeleteOpen(isDeleteOpen => !isDeleteOpen)}}
+                        >
+                            <DeleteOutlineIcon
+                                sx={{
+                                    height: '30px',
+                                    width: '30px'
+                                }}
+                            />
+                        </IconButton>
                     </Stack>
                     <CategoryTable
                         category={category}
@@ -188,6 +230,19 @@ function Category() {
                     </Box>
                 </Stack>}
         </Container>
+
+        <EditCategoryDialog 
+            isOpen={isEditOpen}
+            setIsOpen={setIsEditOpen}
+            category={category}
+            setCategory={setCategory}
+        />
+        <DeleteCategoryDialog 
+            isOpen={isDeleteOpen}
+            setIsOpen={setIsDeleteOpen}
+            category={category}
+        />
+        </>
     )
 }
 
