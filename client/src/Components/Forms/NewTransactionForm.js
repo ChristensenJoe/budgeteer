@@ -13,13 +13,17 @@ import {
     Stack,
     Typography,
     InputAdornment,
-    Autocomplete
+    Autocomplete,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
 } from "@mui/material"
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 
 
-function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
+function NewTransactionForm({ setIsOpen, setTransactions }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities)
     const categories = useSelector((state) => state.categories.entities);
@@ -29,7 +33,7 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
         description: "",
         amount: "",
         categories: [],
-        primary_category: category.name
+        primary_category: categories[0].name
     })
 
     const [errorData, setErrorData] = useState({
@@ -38,7 +42,8 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
         amount: ""
     })
 
-    const filteredCategories = categories.filter(cat => cat.id !== category.id);
+
+    const [secondaryCategories, setSecondaryCategories] = useState(categories.filter((category) => category.name !== formData.primary_category).map((category) => category.name))
 
     function handleChange(e, newValue) {
         let value;
@@ -49,6 +54,15 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
             ...formData,
             [name]: value
         }))
+    }
+
+    function handleCategoryChange(e) {
+        setFormData((formData) => ({ 
+            ...formData,
+            primary_category: e.target.value,
+            categories: formData.categories.filter((category) => category !== e.target.value)
+        }));
+        setSecondaryCategories(categories.filter((category) => category.name !== e.target.value).map((category) => category.name))
     }
 
     async function handleSubmit(e) {
@@ -70,34 +84,33 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
 
         if (response.ok) {
             response.json()
-                .then(newTransaction => {
-                    setCategory((category) => {
-                        const newCategory = {
-                            ...category,
-                            balance: Number.parseFloat(category.balance) + Number.parseFloat(formData.amount),
-                            payments: [
-                                newTransaction,
-                                ...category.payments
-                            ]
-                        }
-                        dispatch(categoriesUpdated(newCategory))
-                        return newCategory;
-                    })
-                    setIsOpen((isOpen) => !isOpen)
-                })
+            .then(newTransaction => {
+                const primary_category = categories.find((category) => category.id === newTransaction.primary_category)
+
+                setTransactions((transactions) => ([
+                    newTransaction,
+                    ...transactions
+                ]))
+
+                dispatch(categoriesUpdated({
+                    ...primary_category,
+                    balance: Number.parseFloat(primary_category.balance) + Number.parseFloat(newTransaction.amount)
+                }))
+                setIsOpen((isOpen) => !isOpen)
+            })
         }
         else {
             response.json()
-                .then(data => {
-                    data.errors.forEach((error) => {
-                        let errorName = error.split(" ")[0].toLowerCase() ;
-                        
-                        setErrorData(errorData => ({
-                            ...errorData,
-                            [errorName]: error
-                        }))
-                    })
+            .then(data => { 
+                data.errors.forEach((error) => {
+                    let errorName = error.split(" ")[0].toLowerCase() ;
+                    
+                    setErrorData(errorData => ({
+                        ...errorData,
+                        [errorName]: error
+                    }))
                 })
+            })
         }
 
     }
@@ -159,11 +172,36 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
                         onChange={handleChange}
                     />
 
+                    <FormControl
+                        sx={{
+                            width: 'calc(85% + 12px)'
+                        }}
+                    >
+                        <InputLabel id="primary_category">Primary Category</InputLabel>
+                        <Select
+                            name="primary_category"
+                            labelId="primary-category"
+                            value={formData.primary_category}
+                            label="Primary Category"
+                            onChange={handleCategoryChange}
+                        >
+                            {categories.map((category) => (
+                                <MenuItem
+                                    key={category.id}
+                                    value={category.name}
+                                >
+                                    {category.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
                     <Autocomplete
                         multiple
+                        value={formData.categories}
                         name="categories"
                         onChange={handleChange}
-                        options={filteredCategories.map((cat) => cat.name)}
+                        options={secondaryCategories}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -203,4 +241,4 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
     )
 }
 
-export default NewPrimaryTransactionForm;
+export default NewTransactionForm;

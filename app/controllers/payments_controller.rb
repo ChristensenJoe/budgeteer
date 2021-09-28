@@ -1,6 +1,5 @@
 class PaymentsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
-    before_action :find_user
 
     def create
         primary_category = @user.categories.find_by(name: params[:primary_category])
@@ -29,14 +28,15 @@ class PaymentsController < ApplicationController
         head :no_content
     end
 
+    def index
+        payments = @user.payments.order(created_at: :desc).uniq
+        render json: payments, status: :accepted
+    end
+
     private
 
     def payments_params
         params.permit(:name, :description, :amount)
-    end
-
-    def find_user
-        @user = User.find(params[:user_id])
     end
 
     def not_found_response

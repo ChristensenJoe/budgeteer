@@ -1,10 +1,8 @@
 import {
-    useEffect,
     useState
 } from 'react'
 
 import {
-    useDispatch,
     useSelector
 } from 'react-redux'
 
@@ -21,8 +19,6 @@ import UserCategoriesItem from '../Items/UserCategoriesItem'
 import NewCategoryDialog from '../Dialogs/NewCategoryDialog'
 
 function UserCategoriesInfoContainer() {
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.entities);
     const categories = useSelector((state) => state.categories.entities)
 
     const [isOpen, setIsOpen] = useState(false)

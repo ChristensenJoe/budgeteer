@@ -15,7 +15,7 @@ import {
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 
-function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory }) {
+function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory, setTransactions }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities);
     const categories = useSelector((state) => state.categories.entities);
@@ -32,23 +32,28 @@ function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory }
             balance: Number.parseFloat(primary_category.balance) - Number.parseFloat(transaction.amount)
         }));
         
-        setCategory((category) => {
-            const filteredPayments = category.payments.filter((t) => t.id !== transaction.id);
-
-            if(category.id === transaction.primary_category) {
-                return {
-                    ...category,
-                    payments: filteredPayments,
-                    balance: Number.parseFloat(category.balance) - Number.parseFloat(transaction.amount)
+        if(setCategory) {
+            setCategory((category) => {
+                const filteredPayments = category.payments.filter((t) => t.id !== transaction.id);
+    
+                if(category.id === transaction.primary_category) {
+                    return {
+                        ...category,
+                        payments: filteredPayments,
+                        balance: Number.parseFloat(category.balance) - Number.parseFloat(transaction.amount)
+                    }
                 }
-            }
-            else {
-                return {
-                    ...category,
-                    payments: filteredPayments
+                else {
+                    return {
+                        ...category,
+                        payments: filteredPayments
+                    }
                 }
-            }
-        });
+            });
+        }
+        if(setTransactions) {
+            setTransactions((tn) => tn.filter((tn) => tn.id !== transaction.id));
+        }
 
         setIsOpen((isOpen) => !isOpen)
     }
