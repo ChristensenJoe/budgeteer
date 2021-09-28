@@ -17,7 +17,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import DeleteTransactionDialog from '../Dialogs/DeleteTransactionDialog'
 
-function CategoryTable({ setCategory, category }) {
+function AllTransactionsTable({ transactions, setTransactions }) {
     const theme = useTheme();
     const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -58,7 +58,7 @@ function CategoryTable({ setCategory, category }) {
                     </TableHead>
                     <TableBody>
                         {
-                            category.payments.map((payment) => {
+                            transactions.map((payment) => {
                                 const date = new Date(payment.date)
                                 const amount = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(payment.amount)
 
@@ -101,11 +101,11 @@ function CategoryTable({ setCategory, category }) {
             <DeleteTransactionDialog
                 isOpen={isDeleteOpen}
                 setIsOpen={setIsDeleteOpen}
-                setCategory={setCategory}
+                setTransactions={setTransactions}
                 transaction={selectedTransaction}
             />
         </>
     )
 }
 
-export default CategoryTable;
+export default AllTransactionsTable;

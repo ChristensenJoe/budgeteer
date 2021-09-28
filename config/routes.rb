@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:update] do
     resources :categories
-    resources :payments, only: [:create, :destroy]
+    resources :payments, only: [:create, :destroy, :index]
     get '/payments/recent', to: 'payments#recent'
   end
 

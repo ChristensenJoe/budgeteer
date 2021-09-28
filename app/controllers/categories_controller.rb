@@ -1,6 +1,5 @@
 class CategoriesController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
-    before_action :find_user
 
 
     def index
@@ -33,10 +32,6 @@ class CategoriesController < ApplicationController
 
     def category_params
         params.permit(:name)
-    end
-
-    def find_user
-        @user = User.find(params[:user_id])
     end
 
     def not_found_response
