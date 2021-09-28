@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_24_223927) do
+ActiveRecord::Schema.define(version: 2021_09_28_215023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2021_09_24_223927) do
 
   create_table "paychecks", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.decimal "amount"
+    t.decimal "amount", precision: 200, scale: 2, default: "0.0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_paychecks_on_user_id"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2021_09_24_223927) do
   create_table "payments", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.decimal "amount", precision: 5, scale: 2, default: "0.0"
+    t.decimal "amount", precision: 200, scale: 2, default: "0.0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 2021_09_24_223927) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.decimal "unallocated_balance"
+    t.decimal "unallocated_balance", precision: 200, scale: 2, default: "0.0"
   end
 
   add_foreign_key "categories", "users"

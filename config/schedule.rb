@@ -1,4 +1,5 @@
 set :environment, "development"
+set :output, "log/cron.log"
 
 # Use this file to easily define all of your cron jobs.
 #
@@ -21,6 +22,6 @@ set :environment, "development"
 
 # Learn more: http://github.com/javan/whenever
 
-# every 1.day, at: '12:00 am' do
-    
-# end
+every 1.day, at: '12:00 am' do
+    runner "User.automated_paycheck"
+end

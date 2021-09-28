@@ -142,6 +142,7 @@ function SignupForm() {
                         }}
                         label="Password"
                         name="password"
+                        type="password"
                         value={formData.password}
                         error={!!errorData.password}
                         helperText={errorData.password}
@@ -152,6 +153,7 @@ function SignupForm() {
                             width: 'calc(85% + 12px)'
                         }}
                         label="Confirm Password"
+                        type="password"
                         name="password_confirmation"
                         value={formData.password_confirmation}
                         error={!!errorData.password_confirmation}

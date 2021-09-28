@@ -17,6 +17,7 @@ import {
 } from "@mui/material"
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
+import { userSet } from '../../Redux/Slices/userSlice'
 
 
 function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
@@ -83,6 +84,10 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
                         dispatch(categoriesUpdated(newCategory))
                         return newCategory;
                     })
+                    dispatch(userSet({
+                        ...user,
+                        total_balance: Number.parseFloat(user.total_balance) + Number.parseFloat(formData.amount)
+                    }))
                     setIsOpen((isOpen) => !isOpen)
                 })
         }

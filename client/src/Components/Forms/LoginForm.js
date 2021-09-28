@@ -118,6 +118,7 @@ function LoginForm() {
                         }}
                         label="Password"
                         name="password"
+                        type="password"
                         value={formData.password}
                         error={!!errorData}
                         onChange={handleChange}

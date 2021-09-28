@@ -25,6 +25,7 @@ import UserRoutes from './Components/Routes/UserRoutes'
 import Header from './Components/Headers/Header'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
+import Settings from './Pages/Settings'
 
 function App() {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ function App() {
     user && dispatch(fetchCategories(user.id))
   }, [dispatch, user])
 
-  
+
   return (
     <ThemeProvider theme={lightmode}>
       <Header />
@@ -50,14 +51,17 @@ function App() {
         </Route>
         {
           user ?
-            (<>
-              <Route path="/settings">
-                <h1>Settings</h1>
-              </Route>
+            <Route path="/settings">
+              <Settings />
+            </Route>
+            :
+            null
+        }
+        {
+          user ?
               <Route path="/:username">
                 <UserRoutes />
               </Route>
-            </>)
             :
             null
           //history.push("/")
