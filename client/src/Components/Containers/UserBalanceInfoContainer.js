@@ -1,7 +1,8 @@
 import {
     Stack,
     Box,
-    Typography
+    Typography,
+    Tooltip
 } from '@mui/material'
 
 import {
@@ -10,7 +11,7 @@ import {
 
 function UserBalanceInfoContainer() {
     const user = useSelector((state) => state.user.entities);
-    
+
     return (
         <Stack
             justifyContent="center"
@@ -30,24 +31,27 @@ function UserBalanceInfoContainer() {
                     width: '100%'
                 }}
             >
-                <Typography
-                    sx={{
-                        paddingLeft: {
-                            xs: '20px',
-                            sm: '40px',
-                            md: '30px',
-                        },
-                        fontWeight: 600,
-                        fontSize: {
-                            xs: '1.95rem',
-                            sm: '2.15rem',
-                            md: '1.15rem',
-                            lg: '1.8rem'
-                        }
-                    }}
-                >
-                    Total Balance
-                </Typography>
+                <Tooltip title="Total Balance" placement="bottom">
+                    <Typography
+                        noWrap
+                        sx={{
+                            paddingLeft: {
+                                xs: '20px',
+                                sm: '40px',
+                                md: '30px',
+                            },
+                            fontWeight: 600,
+                            fontSize: {
+                                xs: '1.95rem',
+                                sm: '2.15rem',
+                                md: '1.15rem',
+                                lg: '1.8rem'
+                            }
+                        }}
+                    >
+                        Total Balance
+                    </Typography>
+                </Tooltip>
                 <Typography
                     sx={{
                         paddingRight: {
@@ -85,24 +89,27 @@ function UserBalanceInfoContainer() {
                     paddingTop: '10px'
                 }}
             >
-                <Typography
-                    sx={{
-                        paddingLeft: {
-                            xs: '20px',
-                            sm: '40px',
-                            md: '30px',
-                        },
-                        fontWeight: 500,
-                        fontSize: {
-                            xs: '1.6rem',
-                            sm: '1.8rem',
-                            md: '1.2rem',
-                            lg: '1.9rem'
-                        }
-                    }}
-                >
-                    Unallocated Balance
-                </Typography>
+                <Tooltip title="Unallocated Balance" placement="bottom">
+                    <Typography
+                        noWrap
+                        sx={{
+                            paddingLeft: {
+                                xs: '20px',
+                                sm: '40px',
+                                md: '30px',
+                            },
+                            fontWeight: 500,
+                            fontSize: {
+                                xs: '1.5rem',
+                                sm: '1.7rem',
+                                md: '1.2rem',
+                                lg: '1.4rem'
+                            }
+                        }}
+                    >
+                        Unallocated Balance
+                    </Typography>
+                </Tooltip>
                 <Typography
                     sx={{
                         paddingRight: {
@@ -112,14 +119,14 @@ function UserBalanceInfoContainer() {
                         },
                         fontWeight: 500,
                         fontSize: {
-                            xs: '1.6rem',
-                            sm: '1.8rem',
+                            xs: '1.5rem',
+                            sm: '1.7rem',
                             md: '1.2rem',
-                            lg: '1.9rem'
+                            lg: '1.4rem'
                         }
                     }}
                 >
-                    {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'}).format(user.unallocated_balance)}
+                    {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(user.unallocated_balance)}
                 </Typography>
             </Stack>
             <Box
@@ -139,25 +146,29 @@ function UserBalanceInfoContainer() {
                     paddingTop: '10px'
                 }}
             >
+                <Tooltip title="Next Payment" placement="bottom">
+                    <Typography
+                        noWrap
+                        sx={{
+                            paddingLeft: {
+                                xs: '20px',
+                                sm: '40px',
+                                md: '30px',
+                            },
+                            fontWeight: 400,
+                            fontSize: {
+                                xs: '1.2rem',
+                                sm: '1.3rem',
+                                md: '1.1rem',
+                                lg: '1.4rem'
+                            }
+                        }}
+                    >
+                        Next Payment
+                    </Typography>
+                </Tooltip>
                 <Typography
-                    sx={{
-                        paddingLeft: {
-                            xs: '20px',
-                            sm: '40px',
-                            md: '30px',
-                        },
-                        fontWeight: 400,
-                        fontSize: {
-                            xs: '1.2rem',
-                            sm: '1.3rem',
-                            md: '1.1rem',
-                            lg: '1.4rem'
-                        }
-                    }}
-                >
-                    Next Payment
-                </Typography>
-                <Typography
+                    noWrap
                     sx={{
                         paddingRight: {
                             xs: '20px',
@@ -185,24 +196,27 @@ function UserBalanceInfoContainer() {
                     paddingTop: '10px'
                 }}
             >
-                <Typography
-                    sx={{
-                        paddingLeft: {
-                            xs: '20px',
-                            sm: '40px',
-                            md: '30px',
-                        },
-                        fontWeight: 400,
-                        fontSize: {
-                            xs: '1.2rem',
-                            sm: '1.3rem',
-                            md: '1.1rem',
-                            lg: '1.4rem'
-                        }
-                    }}
-                >
-                    Paycheck Amount
-                </Typography>
+                <Tooltip title="Paycheck Amount" placement="bottom">
+                    <Typography
+                        noWrap
+                        sx={{
+                            paddingLeft: {
+                                xs: '20px',
+                                sm: '40px',
+                                md: '30px',
+                            },
+                            fontWeight: 400,
+                            fontSize: {
+                                xs: '1.2rem',
+                                sm: '1.3rem',
+                                md: '1.1rem',
+                                lg: '1.4rem'
+                            }
+                        }}
+                    >
+                        Paycheck Amount
+                    </Typography>
+                </Tooltip>
                 <Typography
                     sx={{
                         paddingRight: {
@@ -219,10 +233,16 @@ function UserBalanceInfoContainer() {
                         }
                     }}
                 >
-                    {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'}).format(user.paycheck.amount)}
+                    {
+                        user.paycheck
+                            ?
+                            Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(user.paycheck.amount)
+                            :
+                            "$0.00"
+                    }
                 </Typography>
             </Stack>
-        </Stack>
+        </Stack >
     )
 }
 
