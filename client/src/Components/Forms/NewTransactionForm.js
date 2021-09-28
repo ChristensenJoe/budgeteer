@@ -21,6 +21,7 @@ import {
 } from "@mui/material"
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
+import { userSet } from '../../Redux/Slices/userSlice'
 
 
 function NewTransactionForm({ setIsOpen, setTransactions }) {
@@ -96,6 +97,12 @@ function NewTransactionForm({ setIsOpen, setTransactions }) {
                     ...primary_category,
                     balance: Number.parseFloat(primary_category.balance) + Number.parseFloat(newTransaction.amount)
                 }))
+
+                dispatch(userSet({
+                    ...user,
+                    total_balance: Number.parseFloat(user.total_balance) + Number.parseFloat(newTransaction.amount)
+                }))
+                
                 setIsOpen((isOpen) => !isOpen)
             })
         }

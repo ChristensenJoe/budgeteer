@@ -14,6 +14,7 @@ import {
 } from "@mui/material"
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
+import { userSet } from '../../Redux/Slices/userSlice'
 
 function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory, setTransactions }) {
     const dispatch = useDispatch();
@@ -31,6 +32,11 @@ function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory, 
             ...primary_category,
             balance: Number.parseFloat(primary_category.balance) - Number.parseFloat(transaction.amount)
         }));
+
+        dispatch(userSet({
+            ...user,
+            total_balance: Number.parseFloat(user.total_balance) - Number.parseFloat(transaction.amount)
+        }))
         
         if(setCategory) {
             setCategory((category) => {

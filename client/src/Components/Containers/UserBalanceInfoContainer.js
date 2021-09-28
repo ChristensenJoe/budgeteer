@@ -9,8 +9,31 @@ import {
     useSelector
 } from 'react-redux'
 
+import * as dateMath from 'date-arithmetic'
+
 function UserBalanceInfoContainer() {
     const user = useSelector((state) => state.user.entities);
+
+    const today = new Date();
+
+    const dates = user.paycheck.paydates.map((paydate) => {
+        let date = new Date();
+        date.setDate(Number.parseInt(paydate.paydate.split("-")[2]))
+        if(dateMath.gt(today, date, "day")) {
+            date.setMonth(date.getMonth()+1)
+        }
+        return date
+    })
+
+    let nextPaycheck = 31;
+    dates.forEach((date) => {
+        const difference = dateMath.diff(today, date, "day")
+        if(difference < nextPaycheck) {
+            nextPaycheck = difference;
+        }
+    })
+    console.log(user)
+
 
     return (
         <Stack
@@ -69,7 +92,7 @@ function UserBalanceInfoContainer() {
                         }
                     }}
                 >
-                    $25,000.00
+                    {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(user.total_balance)}
                 </Typography>
             </Stack>
             <Box
@@ -184,7 +207,7 @@ function UserBalanceInfoContainer() {
                         }
                     }}
                 >
-                    14 days
+                    {nextPaycheck} days
                 </Typography>
             </Stack>
             <Stack
