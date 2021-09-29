@@ -22,15 +22,9 @@ import NewTransactionDialog from '../Components/Dialogs/NewTransactionDialog'
 function Transitions() {
     const user = useSelector((state) => state.user.entities);
 
-    const [transactions, setTransactions] = useState(false);
+    const transactions = useSelector((state) => state.transactions.entities);
 
     const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-        fetch(`/users/${user.id}/payments`)
-            .then(res => res.json())
-            .then(setTransactions);
-    }, [user.id])
 
     return (
         <>
@@ -94,7 +88,6 @@ function Transitions() {
                         </Button>
                         <AllTransactionsTable 
                             transactions={transactions}
-                            setTransactions={setTransactions}
                         />
                     </Stack>
                 </Box>
@@ -145,7 +138,6 @@ function Transitions() {
             <NewTransactionDialog 
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                setTransactions={setTransactions}
             />
         </>
     )

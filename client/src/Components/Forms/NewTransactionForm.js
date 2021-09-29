@@ -21,10 +21,11 @@ import {
 } from "@mui/material"
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
+import { transactionsAdded } from '../../Redux/Slices/transactionsSlice'
 import { userSet } from '../../Redux/Slices/userSlice'
 
 
-function NewTransactionForm({ setIsOpen, setTransactions }) {
+function NewTransactionForm({ setIsOpen }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities)
     const categories = useSelector((state) => state.categories.entities);
@@ -82,21 +83,17 @@ function NewTransactionForm({ setIsOpen, setTransactions }) {
             },
             body: JSON.stringify(formData)
         });
-
         if (response.ok) {
             response.json()
             .then(newTransaction => {
                 const primary_category = categories.find((category) => category.id === newTransaction.primary_category)
 
-                setTransactions((transactions) => ([
-                    newTransaction,
-                    ...transactions
-                ]))
-
                 dispatch(categoriesUpdated({
                     ...primary_category,
                     balance: Number.parseFloat(primary_category.balance) + Number.parseFloat(newTransaction.amount)
                 }))
+
+                dispatch(transactionsAdded(newTransaction))
 
                 dispatch(userSet({
                     ...user,
@@ -119,7 +116,6 @@ function NewTransactionForm({ setIsOpen, setTransactions }) {
                 })
             })
         }
-
     }
 
     return (

@@ -14,9 +14,10 @@ import {
 } from "@mui/material"
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
+import { transactionsRemoved } from '../../Redux/Slices/transactionsSlice'
 import { userSet } from '../../Redux/Slices/userSlice'
 
-function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory, setTransactions }) {
+function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities);
     const categories = useSelector((state) => state.categories.entities);
@@ -57,8 +58,8 @@ function DeleteTransactionDialog({ isOpen, setIsOpen, transaction, setCategory, 
                 }
             });
         }
-        if(setTransactions) {
-            setTransactions((tn) => tn.filter((tn) => tn.id !== transaction.id));
+        else {
+            dispatch(transactionsRemoved(transaction))
         }
 
         setIsOpen((isOpen) => !isOpen)

@@ -17,7 +17,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import DeleteTransactionDialog from '../Dialogs/DeleteTransactionDialog'
 
-function AllTransactionsTable({ transactions, setTransactions }) {
+function AllTransactionsTable({ transactions }) {
     const theme = useTheme();
     const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -101,7 +101,6 @@ function AllTransactionsTable({ transactions, setTransactions }) {
             <DeleteTransactionDialog
                 isOpen={isDeleteOpen}
                 setIsOpen={setIsDeleteOpen}
-                setTransactions={setTransactions}
                 transaction={selectedTransaction}
             />
         </>
