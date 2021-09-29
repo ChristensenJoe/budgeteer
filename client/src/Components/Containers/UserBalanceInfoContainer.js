@@ -32,8 +32,6 @@ function UserBalanceInfoContainer() {
             nextPaycheck = difference;
         }
     })
-    console.log(user)
-
 
     return (
         <Stack

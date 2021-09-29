@@ -4,14 +4,9 @@ import {
     Typography
 } from '@mui/material'
 
-import {
-    useSelector
-} from 'react-redux'
-
 import SettingsPaymentForm from '../Forms/SettingsPaymentForm'
 
 function SettingsPaymentContainer() {
-    const user = useSelector((state) => state.user.entities);
 
     return (
         <Stack

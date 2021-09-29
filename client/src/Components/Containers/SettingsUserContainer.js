@@ -4,12 +4,7 @@ import {
     Typography
 } from '@mui/material'
 
-import {
-    useSelector
-} from 'react-redux'
-
 function SettingsUserContainer() {
-    const user = useSelector((state) => state.user.entities);
 
     return (
         <Stack

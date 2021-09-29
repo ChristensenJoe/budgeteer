@@ -1,6 +1,5 @@
 import {
-    useState,
-    useEffect
+    useState
 } from 'react'
 
 import {
@@ -20,7 +19,6 @@ import AllTransactionsTable from '../Components/Tables/AllTransactionsTable'
 import NewTransactionDialog from '../Components/Dialogs/NewTransactionDialog'
 
 function Transitions() {
-    const user = useSelector((state) => state.user.entities);
 
     const transactions = useSelector((state) => state.transactions.entities);
 
