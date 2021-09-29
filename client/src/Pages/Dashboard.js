@@ -63,7 +63,7 @@ function Dashboard() {
                             <InfoContainer
                                 borderRadius={12}
                                 sx={{
-                                    height: '400px',
+                                    minHeight: '400px',
                                     width: '100%'
                                 }}
                             >

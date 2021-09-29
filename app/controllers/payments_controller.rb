@@ -34,6 +34,11 @@ class PaymentsController < ApplicationController
     render json: payments, status: :accepted
   end
 
+  def recent
+    ordered_payments = @user.payments.order(created_at: :desc).uniq.slice(0, 5)
+    render json: ordered_payments, each_serializer: RecentPaymentsSerializer, status: :accepted
+  end
+
   private
 
   def payments_params

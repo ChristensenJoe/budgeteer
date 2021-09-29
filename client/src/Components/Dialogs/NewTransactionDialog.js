@@ -6,7 +6,7 @@ import {
 
 import NewTransactionForm from "../Forms/NewTransactionForm";
 
-function NewTransactionDialog({ isOpen, setIsOpen, setTransactions }) {
+function NewTransactionDialog({ isOpen, setIsOpen }) {
 
     return (
         <Dialog
@@ -29,7 +29,6 @@ function NewTransactionDialog({ isOpen, setIsOpen, setTransactions }) {
             </DialogTitle>
             <NewTransactionForm
                 setIsOpen={setIsOpen}
-                setTransactions={setTransactions}
             />
         </Dialog>
     )

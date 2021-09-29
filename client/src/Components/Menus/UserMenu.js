@@ -14,8 +14,8 @@ import {
     Menu,
     MenuItem,
     Divider,
-    ListItemIcon
-
+    ListItemIcon,
+    Collapse,
 } from '@mui/material'
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -24,17 +24,28 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import ListIcon from '@mui/icons-material/List';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import NewMoneyTransferDialog from '../Dialogs/NewMoneyTransferDialog'
+import NewTransactionDialog from '../Dialogs/NewTransactionDialog';
 
 function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
 
     const user = useSelector(state => state.user.entities)
+    const categories = useSelector(state => state.categories.entities)
 
+    const [isCollapseOpen, setIsCollapseOpen] = useState(false);
     const [isTransferOpen, setIsTransferOpen] = useState(false);
+    const [isTransactionOpen, setIsTransactionOpen] = useState(false);
 
     function handleCloseMenu() {
         setAnchorEl(null);
+        setIsCollapseOpen(false);
+    }
+
+    function handleClickCollapse() {
+        setIsCollapseOpen((isCollapseOpen) => !isCollapseOpen)
     }
 
     return (
@@ -43,7 +54,6 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
                 anchorEl={anchorEl}
                 open={isOpen}
                 onClose={handleCloseMenu}
-                onClick={handleCloseMenu}
                 PaperProps={{
                     elevation: 0,
                     sx: {
@@ -75,6 +85,7 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
             >
                 <MenuItem
                     component={NavLink}
+                    onClick={handleCloseMenu}
                     to={`/${user.username.split(" ").join("")}`}
                 >
                     <ListItemIcon>
@@ -84,6 +95,7 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
                 </MenuItem>
                 <MenuItem
                     component={NavLink}
+                    onClick={handleCloseMenu}
                     to={`/settings`}
                 >
                     <ListItemIcon>
@@ -92,14 +104,22 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
                     Settings
                 </MenuItem>
                 <Divider />
-                <MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleCloseMenu()
+                        setIsTransactionOpen((isTransactionOpen) => !isTransactionOpen)
+                    }}
+                >
                     <ListItemIcon>
                         <ReceiptIcon fontSize="small" />
                     </ListItemIcon>
                     New Transaction
                 </MenuItem>
                 <MenuItem
-                    onClick={() => { setIsTransferOpen((isTransferOpen) => !isTransferOpen)}}
+                    onClick={() => {
+                        handleCloseMenu()
+                        setIsTransferOpen((isTransferOpen) => !isTransferOpen)
+                    }}
                 >
                     <ListItemIcon>
                         <SwapHorizIcon fontSize="small" />
@@ -107,14 +127,47 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
                     Money Transfer
                 </MenuItem>
                 <Divider />
-                <MenuItem>
+                <MenuItem
+                    onClick={handleClickCollapse}
+                    id="categories"
+                >
                     <ListItemIcon>
                         <ListIcon fontSize="small" />
                     </ListItemIcon>
                     Categories
+                    {isCollapseOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 </MenuItem>
+                <Collapse
+                    in={isCollapseOpen}
+                    timeout="auto"
+                    unmountOnExit
+                >
+                    {
+                        categories.map((category) => {
+                            const path = `/${user.username.split(" ").join("")}/${category.name.split(" ").join("-").toLowerCase()}`;
+
+                            return (
+                            <MenuItem
+                                key={category.id}
+                                component={NavLink}
+                                onClick={handleCloseMenu}
+                                to={{
+                                    pathname: path,
+                                    state: category.id
+                                }}
+                                sx={{
+                                    pl: 4
+                                }}
+                            >
+                                {category.name}
+                            </MenuItem>
+                            )
+                        })
+                    }
+                </Collapse>
                 <MenuItem
                     component={NavLink}
+                    onClick={handleCloseMenu}
                     to={`/${user.username.split(" ").join("")}/transactions`}
                 >
                     <ListItemIcon>
@@ -123,9 +176,13 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
                     All Transactions
                 </MenuItem>
             </Menu>
-            <NewMoneyTransferDialog 
+            <NewMoneyTransferDialog
                 isOpen={isTransferOpen}
                 setIsOpen={setIsTransferOpen}
+            />
+            <NewTransactionDialog
+                isOpen={isTransactionOpen}
+                setIsOpen={setIsTransactionOpen}
             />
         </>
     )

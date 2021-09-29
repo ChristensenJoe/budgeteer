@@ -19,6 +19,7 @@ import {
 
 import { fetchUser } from './Redux/Slices/userSlice'
 import { fetchCategories } from './Redux/Slices/categoriesSlice'
+import { fetchTransactions } from './Redux/Slices/transactionsSlice'
 
 import { theme as lightmode } from './Themes/Lightmode'
 import UserRoutes from './Components/Routes/UserRoutes'
@@ -36,6 +37,10 @@ function App() {
 
   useEffect(() => {
     user && dispatch(fetchCategories(user.id))
+  }, [dispatch, user])
+
+  useEffect(() => {
+    user && dispatch(fetchTransactions(user.id))
   }, [dispatch, user])
 
 
