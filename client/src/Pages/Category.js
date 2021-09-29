@@ -45,187 +45,199 @@ function Category() {
     }, [location.state, user.id])
 
 
-    return (
-        <>
-            <Container>
-                {category ? <Box
+    return <>
+        <Container>
+            {category ? <Box
+                sx={{
+                    border: '2px solid',
+                    borderColor: 'primary.main',
+                    borderRadius: 12,
+                    minHeight: '800px'
+                }}
+            >
+                <Stack
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
                     sx={{
-                        border: '2px solid',
-                        borderColor: 'primary.main',
-                        borderRadius: 12,
-                        minHeight: '800px'
+                        marginTop: '30px',
+                        marginBottom: '30px',
+                        width: '100%'
                     }}
                 >
                     <Stack
-                        justifyContent="center"
-                        alignItems="center"
-                        spacing={2}
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={4}
                         sx={{
-                            marginTop: '30px',
-                            marginBottom: '30px',
                             width: '100%'
                         }}
                     >
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            spacing={4}
+                        <Typography
                             sx={{
-                                width: '100%'
+                                paddingLeft: '45px',
+                                fontWeight: 600,
+                                fontSize: {
+                                    xs: '1.55rem',
+                                    sm: '1.95rem',
+                                    md: '2.5rem',
+                                    lg: '2.7rem'
+                                }
+                            }}
+                        >
+                            {category.name}
+                        </Typography>
+                        <Typography
+                            sx={{
+                                paddingRight: '45px',
+                                fontWeight: 600,
+                                color: 'primary.main',
+                                fontSize: {
+                                    xs: '1.55rem',
+                                    sm: '1.95rem',
+                                    md: '2.5rem',
+                                    lg: '2.7rem'
+                                }
+                            }}
+                        >
+                            {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(category.balance)}
+                        </Typography>
+                    </Stack>
+                    <Box
+                        borderRadius="16px"
+                        sx={{
+                            width: '95%',
+                            height: '3px',
+                            bgcolor: 'primary.main'
+                        }}
+                    />
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={4}
+                        sx={{
+                            width: '100%',
+                            paddingTop: '10px',
+                            paddingBottom: '10px'
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                paddingLeft: '35px',
+                                fontWeight: 500,
+                                fontSize: {
+                                    xs: '1.3rem',
+                                    sm: '1.85rem',
+                                    md: '2rem',
+                                    lg: '2.2rem'
+                                }
+                            }}
+                        >
+                            Percentage of Paycheck
+                        </Typography>
+                        <Typography
+                            sx={{
+                                paddingRight: '35px',
+                                fontWeight: 500,
+                                fontSize: {
+                                    xs: '1.3rem',
+                                    sm: '1.85rem',
+                                    md: '2rem',
+                                    lg: '2.2rem'
+                                }
+                            }}
+                        >
+                            {category.percentage * 100}%
+                        </Typography>
+                    </Stack>
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={4}
+                        sx={{
+                            width: '95%',
+                            paddingBottom: '10px'
+                        }}
+                    >
+                        <Button
+                            color="secondary"
+                            variant="outlined"
+                            onClick={() => {setIsNewTransactionOpen(isNewTransactionOpen => !isNewTransactionOpen)}}
+                            sx={{
+                                bgcolor: 'primary.light',
                             }}
                         >
                             <Typography
                                 sx={{
-                                    paddingLeft: '45px',
-                                    fontWeight: 600,
-                                    fontSize: {
-                                        xs: '1.55rem',
-                                        sm: '1.95rem',
-                                        md: '2.5rem',
-                                        lg: '2.7rem'
-                                    }
+                                    color: 'text.primary',
+                                    fontWeight: 500,
+                                    fontSize: '1rem'
                                 }}
                             >
-                                {category.name}
+                                New Transaction
                             </Typography>
-                            <Typography
-                                sx={{
-                                    paddingRight: '45px',
-                                    fontWeight: 600,
-                                    color: 'primary.main',
-                                    fontSize: {
-                                        xs: '1.55rem',
-                                        sm: '1.95rem',
-                                        md: '2.5rem',
-                                        lg: '2.7rem'
-                                    }
-                                }}
-                            >
-                                {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(category.balance)}
-                            </Typography>
-                        </Stack>
-                        <Box
-                            borderRadius={16}
-                            sx={{
-                                width: '95%',
-                                height: '3px',
-                                bgcolor: 'primary.main'
-                            }}
-                        />
+                        </Button>
                         <Stack
                             direction="row"
-                            justifyContent="space-between"
+                            justifyContent="right"
                             spacing={4}
                             sx={{
                                 width: '100%',
-                                paddingTop: '10px',
                                 paddingBottom: '10px'
                             }}
                         >
-                            <Typography
-                                sx={{
-                                    paddingLeft: '35px',
-                                    fontWeight: 500,
-                                    fontSize: {
-                                        xs: '1.3rem',
-                                        sm: '1.85rem',
-                                        md: '2rem',
-                                        lg: '2.2rem'
-                                    }
-                                }}
+                            <IconButton
+                                size="large"
+                                onClick={() => { setIsEditOpen(isEditOpen => !isEditOpen) }}
                             >
-                                Percentage of Paycheck
-                            </Typography>
-                            <Typography
-                                sx={{
-                                    paddingRight: '35px',
-                                    fontWeight: 500,
-                                    fontSize: {
-                                        xs: '1.3rem',
-                                        sm: '1.85rem',
-                                        md: '2rem',
-                                        lg: '2.2rem'
-                                    }
-                                }}
-                            >
-                                {category.percentage * 100}%
-                            </Typography>
-                        </Stack>
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            spacing={4}
-                            sx={{
-                                width: '95%',
-                                paddingBottom: '10px'
-                            }}
-                        >
-                            <Button
-                                color="secondary"
-                                variant="outlined"
-                                onClick={() => {setIsNewTransactionOpen(isNewTransactionOpen => !isNewTransactionOpen)}}
-                                sx={{
-                                    bgcolor: 'primary.light',
-                                }}
-                            >
-                                <Typography
+                                <EditOutlinedIcon
                                     sx={{
-                                        color: 'text.primary',
-                                        fontWeight: 500,
-                                        fontSize: '1rem'
+                                        height: '30px',
+                                        width: '30px'
                                     }}
-                                >
-                                    New Transaction
-                                </Typography>
-                            </Button>
-                            <Stack
-                                direction="row"
-                                justifyContent="right"
-                                spacing={4}
-                                sx={{
-                                    width: '100%',
-                                    paddingBottom: '10px'
-                                }}
+                                />
+                            </IconButton>
+                            <IconButton
+                                size="large"
+                                onClick={() => { setIsDeleteOpen(isDeleteOpen => !isDeleteOpen) }}
                             >
-                                <IconButton
-                                    size="large"
-                                    onClick={() => { setIsEditOpen(isEditOpen => !isEditOpen) }}
-                                >
-                                    <EditOutlinedIcon
-                                        sx={{
-                                            height: '30px',
-                                            width: '30px'
-                                        }}
-                                    />
-                                </IconButton>
-                                <IconButton
-                                    size="large"
-                                    onClick={() => { setIsDeleteOpen(isDeleteOpen => !isDeleteOpen) }}
-                                >
-                                    <DeleteOutlineIcon
-                                        sx={{
-                                            height: '30px',
-                                            width: '30px'
-                                        }}
-                                    />
-                                </IconButton>
-                            </Stack>
+                                <DeleteOutlineIcon
+                                    sx={{
+                                        height: '30px',
+                                        width: '30px'
+                                    }}
+                                />
+                            </IconButton>
                         </Stack>
-                        <CategoryTable
-                            category={category}
-                            setCategory={setCategory}
-                        />
                     </Stack>
-                </Box>
-                    :
-                    <Stack
-                        justifyContent="center"
-                        alignItems="center"
-                        spacing={4}
+                    <CategoryTable
+                        category={category}
+                        setCategory={setCategory}
+                    />
+                </Stack>
+            </Box>
+                :
+                <Stack
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={4}
+                    sx={{
+                        marginTop: '80px',
+                        marginBottom: '30px',
+                        width: '100%'
+                    }}
+                >
+                    <Skeleton
+                        animation="wave"
                         sx={{
-                            marginTop: '80px',
-                            marginBottom: '30px',
-                            width: '100%'
+                            width: '90%',
+                            height: '80px',
+                            marginBottom: '10px'
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            display: 'contents'
                         }}
                     >
                         <Skeleton
@@ -233,54 +245,40 @@ function Category() {
                             sx={{
                                 width: '90%',
                                 height: '80px',
-                                marginBottom: '10px'
+                                marginBottom: '50px'
                             }}
                         />
-                        <Box
+                        <Skeleton
+                            animation="wave"
+                            variant="rectangular"
                             sx={{
-                                display: 'contents'
+                                width: '90%',
+                                height: '600px'
                             }}
-                        >
-                            <Skeleton
-                                animation="wave"
-                                sx={{
-                                    width: '90%',
-                                    height: '80px',
-                                    marginBottom: '50px'
-                                }}
-                            />
-                            <Skeleton
-                                animation="wave"
-                                variant="rectangular"
-                                sx={{
-                                    width: '90%',
-                                    height: '600px'
-                                }}
-                            />
-                        </Box>
-                    </Stack>}
-            </Container>
+                        />
+                    </Box>
+                </Stack>}
+        </Container>
 
-            <EditCategoryDialog
-                isOpen={isEditOpen}
-                setIsOpen={setIsEditOpen}
-                category={category}
-                setCategory={setCategory}
-            />
-            <DeleteCategoryDialog
-                isOpen={isDeleteOpen}
-                setIsOpen={setIsDeleteOpen}
-                category={category}
-            />
+        <EditCategoryDialog
+            isOpen={isEditOpen}
+            setIsOpen={setIsEditOpen}
+            category={category}
+            setCategory={setCategory}
+        />
+        <DeleteCategoryDialog
+            isOpen={isDeleteOpen}
+            setIsOpen={setIsDeleteOpen}
+            category={category}
+        />
 
-            <NewPrimaryTransactionDialog 
-                isOpen={isNewTransactionOpen}
-                setIsOpen={setIsNewTransactionOpen}
-                setCategory={setCategory}
-                category={category}
-            />
-        </>
-    )
+        <NewPrimaryTransactionDialog 
+            isOpen={isNewTransactionOpen}
+            setIsOpen={setIsNewTransactionOpen}
+            setCategory={setCategory}
+            category={category}
+        />
+    </>;
 }
 
 export default Category;

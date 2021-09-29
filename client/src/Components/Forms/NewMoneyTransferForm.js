@@ -290,9 +290,7 @@ function NewMoneyTransferForm({ setIsOpen }) {
                         </Select>
                         <FormHelperText>{errorData.primary_category}</FormHelperText>
                     </FormControl>
-                    <IconButton
-                        onClick={handleCategorySwap}
-                    >
+                    <IconButton onClick={handleCategorySwap} size="large">
                         <SwapVertIcon
                             sx={{
                                 height: '40px',
@@ -351,7 +349,7 @@ function NewMoneyTransferForm({ setIsOpen }) {
                 </Button>
             </DialogActions>
         </form>
-    )
+    );
 }
 
 export default NewMoneyTransferForm;

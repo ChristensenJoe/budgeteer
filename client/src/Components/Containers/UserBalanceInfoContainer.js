@@ -94,7 +94,7 @@ function UserBalanceInfoContainer() {
                 </Typography>
             </Stack>
             <Box
-                borderRadius={16}
+                borderRadius="16px"
                 sx={{
                     width: '90%',
                     height: '3px',
@@ -151,7 +151,7 @@ function UserBalanceInfoContainer() {
                 </Typography>
             </Stack>
             <Box
-                borderRadius={16}
+                borderRadius="16px"
                 sx={{
                     width: '90%',
                     height: '1px',
@@ -264,7 +264,7 @@ function UserBalanceInfoContainer() {
                 </Typography>
             </Stack>
         </Stack >
-    )
+    );
 }
 
 export default UserBalanceInfoContainer;

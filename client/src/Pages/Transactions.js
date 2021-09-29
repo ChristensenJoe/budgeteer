@@ -24,80 +24,92 @@ function Transitions() {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    return (
-        <>
-            <Container>
-                {transactions ? <Box
+    return <>
+        <Container>
+            {transactions ? <Box
+                sx={{
+                    border: '2px solid',
+                    borderColor: 'primary.main',
+                    borderRadius: 12,
+                    minHeight: '800px'
+                }}
+            >
+                <Stack
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
                     sx={{
-                        border: '2px solid',
-                        borderColor: 'primary.main',
-                        borderRadius: 12,
-                        minHeight: '800px'
+                        marginTop: '30px',
+                        marginBottom: '30px',
+                        width: '100%'
                     }}
                 >
-                    <Stack
-                        justifyContent="center"
-                        alignItems="center"
-                        spacing={2}
+                    <Typography
                         sx={{
-                            marginTop: '30px',
-                            marginBottom: '30px',
-                            width: '100%'
+                            fontWeight: 600,
+                            fontSize: {
+                                xs: '1.55rem',
+                                sm: '1.95rem',
+                                md: '2.5rem',
+                                lg: '2.7rem'
+                            }
                         }}
+                    >
+                        All Transactions
+                    </Typography>
+                    <Box
+                        borderRadius="16px"
+                        sx={{
+                            width: '95%',
+                            height: '3px',
+                            bgcolor: 'primary.main'
+                        }}
+                    />
+                    <Button
+                        color="secondary"
+                        variant="outlined"
+                        sx={{
+                            bgcolor: 'primary.light',
+                        }}
+                        onClick={() => { setIsOpen((isOpen) => !isOpen)}}
                     >
                         <Typography
                             sx={{
-                                fontWeight: 600,
-                                fontSize: {
-                                    xs: '1.55rem',
-                                    sm: '1.95rem',
-                                    md: '2.5rem',
-                                    lg: '2.7rem'
-                                }
+                                color: 'text.primary',
+                                fontWeight: 500,
+                                fontSize: '1rem'
                             }}
                         >
-                            All Transactions
+                            New Transaction
                         </Typography>
-                        <Box
-                            borderRadius={16}
-                            sx={{
-                                width: '95%',
-                                height: '3px',
-                                bgcolor: 'primary.main'
-                            }}
-                        />
-                        <Button
-                            color="secondary"
-                            variant="outlined"
-                            sx={{
-                                bgcolor: 'primary.light',
-                            }}
-                            onClick={() => { setIsOpen((isOpen) => !isOpen)}}
-                        >
-                            <Typography
-                                sx={{
-                                    color: 'text.primary',
-                                    fontWeight: 500,
-                                    fontSize: '1rem'
-                                }}
-                            >
-                                New Transaction
-                            </Typography>
-                        </Button>
-                        <AllTransactionsTable 
-                            transactions={transactions}
-                        />
-                    </Stack>
-                </Box>
-                    :
-                    <Stack
-                        justifyContent="center"
-                        alignItems="center"
-                        spacing={4}
+                    </Button>
+                    <AllTransactionsTable 
+                        transactions={transactions}
+                    />
+                </Stack>
+            </Box>
+                :
+                <Stack
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={4}
+                    sx={{
+                        marginTop: '80px',
+                        marginBottom: '30px',
+                        width: '100%'
+                    }}
+                >
+                    <Skeleton
+                        animation="wave"
                         sx={{
-                            marginTop: '80px',
-                            marginBottom: '30px',
-                            width: '100%'
+                            width: '90%',
+                            height: '80px',
+                            marginBottom: '10px'
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            display: 'contents'
                         }}
                     >
                         <Skeleton
@@ -105,40 +117,26 @@ function Transitions() {
                             sx={{
                                 width: '90%',
                                 height: '80px',
-                                marginBottom: '10px'
+                                marginBottom: '50px'
                             }}
                         />
-                        <Box
+                        <Skeleton
+                            animation="wave"
+                            variant="rectangular"
                             sx={{
-                                display: 'contents'
+                                width: '90%',
+                                height: '600px'
                             }}
-                        >
-                            <Skeleton
-                                animation="wave"
-                                sx={{
-                                    width: '90%',
-                                    height: '80px',
-                                    marginBottom: '50px'
-                                }}
-                            />
-                            <Skeleton
-                                animation="wave"
-                                variant="rectangular"
-                                sx={{
-                                    width: '90%',
-                                    height: '600px'
-                                }}
-                            />
-                        </Box>
-                    </Stack>}
-            </Container>
+                        />
+                    </Box>
+                </Stack>}
+        </Container>
 
-            <NewTransactionDialog 
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-            />
-        </>
-    )
+        <NewTransactionDialog 
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+        />
+    </>;
 }
 
 export default Transitions;

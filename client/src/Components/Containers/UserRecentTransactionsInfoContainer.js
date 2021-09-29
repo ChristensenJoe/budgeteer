@@ -51,7 +51,7 @@ function UserRecentTransactionsInfoContainer() {
                 Recent Transactions
             </Typography>
             <Box
-                borderRadius={16}
+                borderRadius="16px"
                 sx={{
                     width: '90%',
                     height: '3px',
@@ -73,7 +73,7 @@ function UserRecentTransactionsInfoContainer() {
                             primary_category={transaction.primary_category}
                         />
                         <Box
-                            borderRadius={16}
+                            borderRadius="16px"
                             sx={{
                                 marginTop: '10px',
                                 marginBottom: '10px',
@@ -88,7 +88,7 @@ function UserRecentTransactionsInfoContainer() {
                 ))
             }
         </Stack>
-    )
+    );
 }
 
 export default UserRecentTransactionsInfoContainer;

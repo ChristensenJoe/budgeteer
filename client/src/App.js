@@ -8,9 +8,7 @@ import {
   //useHistory
 } from 'react-router-dom'
 
-import {
-  ThemeProvider
-} from '@mui/material'
+import { ThemeProvider, StyledEngineProvider } from '@mui/material';
 
 import {
   useDispatch,
@@ -45,37 +43,39 @@ function App() {
 
 
   return (
-    <ThemeProvider theme={lightmode}>
-      <Header />
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup">
-          <Signup />
-        </Route>
-        {
-          user ?
-            <Route path="/settings">
-              <Settings />
-            </Route>
-            :
-            null
-        }
-        {
-          user ?
-              <Route path="/:username">
-                <UserRoutes />
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={lightmode}>
+        <Header />
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/signup">
+            <Signup />
+          </Route>
+          {
+            user ?
+              <Route path="/settings">
+                <Settings />
               </Route>
-            :
-            null
-          //history.push("/")
-        }
-        <Route exact path="/">
-          <h1>Homepage</h1>
-        </Route>
-      </Switch>
-    </ThemeProvider>
+              :
+              null
+          }
+          {
+            user ?
+                <Route path="/:username">
+                  <UserRoutes />
+                </Route>
+              :
+              null
+            //history.push("/")
+          }
+          <Route exact path="/">
+            <h1>Homepage</h1>
+          </Route>
+        </Switch>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

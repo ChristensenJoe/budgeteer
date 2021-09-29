@@ -38,7 +38,7 @@ function SettingsPaymentContainer() {
                 Payment Details
             </Typography>
             <Box
-                borderRadius={16}
+                borderRadius="16px"
                 sx={{
                     width: '90%',
                     height: '3px',
@@ -47,7 +47,7 @@ function SettingsPaymentContainer() {
             />
             <SettingsPaymentForm />
         </Stack >
-    )
+    );
 }
 
 export default SettingsPaymentContainer

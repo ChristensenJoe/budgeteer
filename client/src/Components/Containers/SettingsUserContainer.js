@@ -35,7 +35,7 @@ function SettingsUserContainer() {
                 User Details
             </Typography>
             <Box
-                borderRadius={16}
+                borderRadius="16px"
                 sx={{
                     width: '90%',
                     height: '3px',
@@ -43,7 +43,7 @@ function SettingsUserContainer() {
                 }}
             />
         </Stack >
-    )
+    );
 }
 
 export default SettingsUserContainer
