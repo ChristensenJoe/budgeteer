@@ -23,14 +23,21 @@ import {
 
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 
+import { userSet } from '../../Redux/Slices/userSlice'
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 
 
 function NewMoneyTransferForm({ setIsOpen }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities)
-    const categories = useSelector((state) => state.categories.entities);
-
+    const cat = useSelector((state) => state.categories.entities);
+    const categories = [
+        ...cat,
+        {
+            name: 'Unallocated Balance',
+            id: "unallocated_balance"
+        }
+    ]
     const [formData, setFormData] = useState({
         name: "Money Transfer",
         amount: "",
@@ -46,8 +53,6 @@ function NewMoneyTransferForm({ setIsOpen }) {
     const [primaryCategories, setPrimaryCategories] = useState(categories)
 
     const [secondaryCategories, setSecondaryCategories] = useState(categories.filter((category) => category.name !== formData.primary_category))
-
-    console.log(formData);
 
     function handleChange(e) {
         setFormData((formData) => ({
@@ -136,14 +141,34 @@ function NewMoneyTransferForm({ setIsOpen }) {
                                 const fromCategory = categories.find((category) => category.id === newFromTransfer.primary_category)
                                 const toCategory = categories.find((category) => category.id === newToTransfer.primary_category)
 
-                                dispatch(categoriesUpdated({
-                                    ...fromCategory,
-                                    balance: Number.parseFloat(fromCategory.balance) + Number.parseFloat(newFromTransfer.amount)
-                                }))
-                                dispatch(categoriesUpdated({
-                                    ...toCategory,
-                                    balance: Number.parseFloat(toCategory.balance) + Number.parseFloat(newToTransfer.amount)
-                                }))
+                                console.log(newToTransfer);
+
+                                if (fromCategory.name !== "Unallocated Balance") {
+                                    dispatch(categoriesUpdated({
+                                        ...fromCategory,
+                                        balance: Number.parseFloat(fromCategory.balance) + Number.parseFloat(newFromTransfer.amount)
+                                    }))
+                                }
+                                else {
+                                    dispatch(userSet({
+                                        ...user,
+                                        unallocated_balance: Number.parseFloat(user.unallocated_balance) +
+                                        Number.parseFloat(newFromTransfer.amount) 
+                                    }))
+                                }
+                                if (toCategory.name !== "Unallocated Balance") {
+                                    dispatch(categoriesUpdated({
+                                        ...toCategory,
+                                        balance: Number.parseFloat(toCategory.balance) + Number.parseFloat(newToTransfer.amount)
+                                    }))
+                                }
+                                else {
+                                    dispatch(userSet({
+                                        ...user,
+                                        unallocated_balance: Number.parseFloat(user.unallocated_balance) +
+                                        Number.parseFloat(newToTransfer.amount) 
+                                    }))
+                                }
                                 setIsOpen((isOpen) => !isOpen)
                             })
                     })
@@ -178,7 +203,7 @@ function NewMoneyTransferForm({ setIsOpen }) {
                     }))
                 }
             }
-            else if(formData.secondary_category) {
+            else if (formData.secondary_category) {
                 if (formData.amount) {
                     setErrorData(errorData => ({
                         ...errorData,
