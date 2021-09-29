@@ -4,7 +4,8 @@ import {
 } from 'react'
 
 import {
-    useSelector
+    useSelector,
+    useDispatch
 } from 'react-redux'
 
 import {
@@ -13,16 +14,16 @@ import {
     Typography
 } from '@mui/material'
 
+import { fetchRecentTransactions } from '../../Redux/Slices/recentTransactionsSlice'
 import UserRecentTransactionsItem from '../Items/UserRecentTransactionsItem'
 
 function UserRecentTransactionsInfoContainer() {
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities);
-    const [recentTransactions, setRecentTransactions] = useState([]);
+    const recentTransactions = useSelector((state) => state.recentTransactions.entities);
 
     useEffect(() => {
-        fetch(`/users/${user.id}/payments/recent`)
-            .then(res => res.json())
-            .then(setRecentTransactions)
+        dispatch(fetchRecentTransactions(user.id))
     }, [user.id])
 
     return (

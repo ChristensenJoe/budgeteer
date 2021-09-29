@@ -29,7 +29,8 @@ function UserRecentTransactionsItem({ name, amount, primary_category }) {
                     title={name}
                     placement="bottom"
                     sx={{
-                        width: '30%'
+                        minWidth: '30%',
+                        maxWidth: '30%'
                     }}
                 >
                     <Typography
@@ -53,7 +54,8 @@ function UserRecentTransactionsItem({ name, amount, primary_category }) {
                     alignItems="center"
                     spacing={2}
                     sx={{
-                        width: '70%'
+                        minWidth: '70%',
+                        maxWidth: '70%'
                     }}
                 >
                     <Tooltip

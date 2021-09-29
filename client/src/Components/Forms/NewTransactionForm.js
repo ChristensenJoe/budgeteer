@@ -22,6 +22,7 @@ import {
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 import { transactionsAdded } from '../../Redux/Slices/transactionsSlice'
+import { recentTransactionsAdded, recentTransactionsRemoved } from '../../Redux/Slices/recentTransactionsSlice'
 import { userSet } from '../../Redux/Slices/userSlice'
 
 
@@ -29,6 +30,7 @@ function NewTransactionForm({ setIsOpen }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities)
     const categories = useSelector((state) => state.categories.entities);
+    const recentTransactions = useSelector((state) => state.recentTransactions.entities);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -91,6 +93,13 @@ function NewTransactionForm({ setIsOpen }) {
                 dispatch(categoriesUpdated({
                     ...primary_category,
                     balance: Number.parseFloat(primary_category.balance) + Number.parseFloat(newTransaction.amount)
+                }))
+
+                dispatch(recentTransactionsRemoved(recentTransactions[recentTransactions.length - 1]))
+                const recentTransactionsCategory = categories.find((category) => category.id === newTransaction.primary_category);
+                dispatch(recentTransactionsAdded({
+                    ...newTransaction,
+                    primary_category: recentTransactionsCategory.name
                 }))
 
                 dispatch(transactionsAdded(newTransaction))

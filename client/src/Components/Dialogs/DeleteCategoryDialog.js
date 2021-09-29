@@ -1,4 +1,8 @@
 import {
+    useState
+} from 'react'
+
+import {
     useHistory
 } from 'react-router-dom'
 
@@ -13,7 +17,9 @@ import {
     Typography,
     Button,
     DialogActions,
-    DialogContent
+    DialogContent,
+    Alert,
+    AlertTitle
 } from "@mui/material"
 
 import { categoriesRemoved } from '../../Redux/Slices/categoriesSlice'
@@ -22,16 +28,24 @@ function DeleteCategoryDialog({ isOpen, setIsOpen, category }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities);
+    const categories = useSelector((state) => state.categories.entities);
+
+    const [isAlert, setIsAlert] = useState(false);
 
     function handleSubmit() {
-        fetch(`/users/${user.id}/categories/${category.id}`, {
-            method: "DELETE"
-        });
-        
-        dispatch(categoriesRemoved(category));
-        history.push(`/${user.username.split(" ").join("")}`)
-        setIsOpen((isOpen) => !isOpen);
+        if (categories.length > 1) {
+            fetch(`/users/${user.id}/categories/${category.id}`, {
+                method: "DELETE"
+            });
 
+            dispatch(categoriesRemoved(category));
+            setIsAlert(false);
+            history.push(`/${user.username.split(" ").join("")}`)
+            setIsOpen((isOpen) => !isOpen);
+        }
+        else {
+            setIsAlert(true);
+        }
     }
 
     return (
@@ -67,6 +81,24 @@ function DeleteCategoryDialog({ isOpen, setIsOpen, category }) {
                 >
                     Are you sure you want to delete this category?
                 </Typography>
+                {isAlert &&
+                    <Alert
+                        severity="error"
+                        sx={{
+                            marginTop: '20px'
+                        }}
+                    >
+                        <AlertTitle>Error</AlertTitle>
+                        <Typography
+                            sx={{
+                                fontSize: '1rem',
+                                textAlign: 'center'
+                            }}
+                        >
+                            You must have at least one category.
+                        </Typography>
+                    </Alert>
+                }
             </DialogContent>
             <DialogActions>
                 <Button
