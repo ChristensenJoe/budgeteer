@@ -30,7 +30,7 @@ class CategoriesController < ApplicationController
   private
 
   def category_params
-    params.permit(:name)
+    params.permit(:name, :percentage)
   end
 
   def not_found_response

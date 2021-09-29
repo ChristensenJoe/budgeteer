@@ -15,9 +15,13 @@ import {
     DialogActions,
     TextField,
     Button,
+    InputAdornment,
     Stack,
-    Typography
+    Typography,
+    Alert,
 } from "@mui/material"
+
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import { categoriesAdded } from '../../Redux/Slices/categoriesSlice'
 
@@ -26,10 +30,11 @@ function NewCategoryForm({ setIsOpen }) {
     const location = useLocation();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities)
+    const categories = useSelector((state) => state.categories.entities)
 
     const [formData, setFormData] = useState({
         name: "",
-        percentage: 0.0
+        percentage: ""
     })
     const [errorData, setErrorData] = useState({
         name: ""
@@ -41,7 +46,7 @@ function NewCategoryForm({ setIsOpen }) {
             [e.target.name]: e.target.value
         }))
     }
-    
+
     async function handleSubmit(e) {
         e.preventDefault();
 
@@ -49,12 +54,18 @@ function NewCategoryForm({ setIsOpen }) {
             name: ""
         })
 
+        const newFormData = {
+            ...formData,
+            percentage: Number.parseInt(formData.percentage)/100
+        }
+
+        
         const response = await fetch(`/users/${user.id}/categories`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(newFormData)
         });
 
         if (response.ok) {
@@ -83,6 +94,8 @@ function NewCategoryForm({ setIsOpen }) {
         }
     }
 
+    const allowedPercentage = (100-(categories.reduce((total, category) => Number.parseFloat(category.percentage)+total, 0)*100)).toString()
+
     return (
         <form>
             <DialogContent>
@@ -105,15 +118,32 @@ function NewCategoryForm({ setIsOpen }) {
                         helperText={errorData.name}
                         onChange={handleChange}
                     />
-                    <TextField
-                        sx={{
-                            width: 'calc(85% + 12px)'
-                        }}
+                    <CurrencyTextField
+                    style={{
+                        width: 'calc(45% + 12px)'
+                    }}
+                        variant="outlined"
+                        currencySymbol=""
                         label="Percentage of Income"
                         name="percentage"
-                        value={formData.percentage}
+                        minimumValue="0"
+                        maximumValue={allowedPercentage}
+                        outputFormat="string"
+                        decimalPlaces={0}
                         onChange={handleChange}
+                        value={formData.percentage}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">%</InputAdornment>
+                        }}
                     />
+                    <Alert 
+                    severity="info"
+                    sx={{
+                        width: 'calc(85% + 12px)'
+                    }}
+                    >
+                        <strong>Unallocated Percentage</strong> — {allowedPercentage}%
+                    </Alert>
                 </Stack>
             </DialogContent>
             <DialogActions>
