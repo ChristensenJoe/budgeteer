@@ -1,5 +1,4 @@
 import {
-    useState,
     useEffect
 } from 'react'
 
@@ -24,7 +23,7 @@ function UserRecentTransactionsInfoContainer() {
 
     useEffect(() => {
         dispatch(fetchRecentTransactions(user.id))
-    }, [user.id])
+    }, [user.id, dispatch])
 
     return (
         <Stack

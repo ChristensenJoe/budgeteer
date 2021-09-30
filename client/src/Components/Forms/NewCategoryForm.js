@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { 
+    useState,
+    forwardRef
+} from 'react'
 
 import {
     useHistory,
@@ -9,6 +12,10 @@ import {
     useSelector,
     useDispatch
 } from 'react-redux'
+
+
+import NumberFormat from 'react-number-format'
+import PropTypes from 'prop-types'
 
 import {
     DialogContent,
@@ -21,9 +28,42 @@ import {
     Alert,
 } from "@mui/material"
 
-import CurrencyTextField from '@unicef/material-ui-currency-textfield'
-
 import { categoriesAdded } from '../../Redux/Slices/categoriesSlice'
+
+const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
+    const { onChange, maxinput, ...other } = props;
+
+    const withValueCap = (inputObj) => {
+        const {value} = inputObj;
+        if (value <= maxinput) return true;
+        return false;
+    }
+    console.log(maxinput)
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={ref}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value
+                    }
+                })
+            }}
+            decimalScale={0}
+            allowNegative={false}
+            isAllowed={withValueCap}
+        />
+    );
+});
+
+NumberFormatCustom.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    maxinput: PropTypes.number.isRequired,
+}
 
 function NewCategoryForm({ setIsOpen }) {
     const history = useHistory();
@@ -94,7 +134,7 @@ function NewCategoryForm({ setIsOpen }) {
         }
     }
 
-    const allowedPercentage = (100-(categories.reduce((total, category) => Number.parseFloat(category.percentage)+total, 0)*100)).toString()
+    const allowedPercentage = Math.floor((100-(categories.reduce((total, category) => Number.parseFloat(category.percentage)+total, 0)*100)))
 
     return (
         <form>
@@ -118,22 +158,21 @@ function NewCategoryForm({ setIsOpen }) {
                         helperText={errorData.name}
                         onChange={handleChange}
                     />
-                    <CurrencyTextField
+                    <TextField
                     style={{
-                        width: 'calc(45% + 12px)'
+                        width: 'calc(25% + 12px)'
                     }}
                         variant="outlined"
-                        currencySymbol=""
-                        label="Percentage of Income"
                         name="percentage"
-                        minimumValue="0"
-                        maximumValue={allowedPercentage}
-                        outputFormat="string"
-                        decimalPlaces={0}
+                        label="Percentage"
                         onChange={handleChange}
                         value={formData.percentage}
                         InputProps={{
-                            endAdornment: <InputAdornment position="end">%</InputAdornment>
+                            endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                            inputComponent: NumberFormatCustom,
+                            inputProps: {
+                                maxinput: allowedPercentage
+                            }
                         }}
                     />
                     <Alert 

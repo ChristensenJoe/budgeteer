@@ -25,7 +25,6 @@ import { transactionsAdded } from '../../Redux/Slices/transactionsSlice'
 import { recentTransactionsAdded, recentTransactionsRemoved } from '../../Redux/Slices/recentTransactionsSlice'
 import { userSet } from '../../Redux/Slices/userSlice'
 
-
 function NewTransactionForm({ setIsOpen }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.entities)
@@ -61,7 +60,7 @@ function NewTransactionForm({ setIsOpen }) {
     }
 
     function handleCategoryChange(e) {
-        setFormData((formData) => ({ 
+        setFormData((formData) => ({
             ...formData,
             primary_category: e.target.value,
             categories: formData.categories.filter((category) => category !== e.target.value)
@@ -87,43 +86,43 @@ function NewTransactionForm({ setIsOpen }) {
         });
         if (response.ok) {
             response.json()
-            .then(newTransaction => {
-                const primary_category = categories.find((category) => category.id === newTransaction.primary_category)
+                .then(newTransaction => {
+                    const primary_category = categories.find((category) => category.id === newTransaction.primary_category)
 
-                dispatch(categoriesUpdated({
-                    ...primary_category,
-                    balance: Number.parseFloat(primary_category.balance) + Number.parseFloat(newTransaction.amount)
-                }))
+                    dispatch(categoriesUpdated({
+                        ...primary_category,
+                        balance: Number.parseFloat(primary_category.balance) + Number.parseFloat(newTransaction.amount)
+                    }))
 
-                dispatch(recentTransactionsRemoved(recentTransactions[recentTransactions.length - 1]))
-                const recentTransactionsCategory = categories.find((category) => category.id === newTransaction.primary_category);
-                dispatch(recentTransactionsAdded({
-                    ...newTransaction,
-                    primary_category: recentTransactionsCategory.name
-                }))
+                    dispatch(recentTransactionsRemoved(recentTransactions[recentTransactions.length - 1]))
+                    const recentTransactionsCategory = categories.find((category) => category.id === newTransaction.primary_category);
+                    dispatch(recentTransactionsAdded({
+                        ...newTransaction,
+                        primary_category: recentTransactionsCategory.name
+                    }))
 
-                dispatch(transactionsAdded(newTransaction))
+                    dispatch(transactionsAdded(newTransaction))
 
-                dispatch(userSet({
-                    ...user,
-                    total_balance: Number.parseFloat(user.total_balance) + Number.parseFloat(newTransaction.amount)
-                }))
-                
-                setIsOpen((isOpen) => !isOpen)
-            })
+                    dispatch(userSet({
+                        ...user,
+                        total_balance: Number.parseFloat(user.total_balance) + Number.parseFloat(newTransaction.amount)
+                    }))
+
+                    setIsOpen((isOpen) => !isOpen)
+                })
         }
         else {
             response.json()
-            .then(data => { 
-                data.errors.forEach((error) => {
-                    let errorName = error.split(" ")[0].toLowerCase() ;
-                    
-                    setErrorData(errorData => ({
-                        ...errorData,
-                        [errorName]: error
-                    }))
+                .then(data => {
+                    data.errors.forEach((error) => {
+                        let errorName = error.split(" ")[0].toLowerCase();
+
+                        setErrorData(errorData => ({
+                            ...errorData,
+                            [errorName]: error
+                        }))
+                    })
                 })
-            })
         }
     }
 
