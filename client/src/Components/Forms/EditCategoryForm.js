@@ -1,7 +1,7 @@
-import { 
+import {
     useState,
     forwardRef
- } from 'react'
+} from 'react'
 
 import {
     useHistory
@@ -32,11 +32,10 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
     const { onChange, maxinput, ...other } = props;
 
     const withValueCap = (inputObj) => {
-        const {value} = inputObj;
+        const { value } = inputObj;
         if (value <= maxinput) return true;
         return false;
     }
-    console.log(maxinput)
 
     return (
         <NumberFormat
@@ -50,6 +49,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
                     }
                 })
             }}
+            suffix={'%'}
             decimalScale={0}
             allowNegative={false}
             isAllowed={withValueCap}
@@ -138,76 +138,76 @@ function EditCategoryForm({ setIsOpen, category, setCategory }) {
 
     return (
         <form>
-                <DialogContent>
-                    <Stack
-                        spacing={6}
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{
-                            marginBottom: '20px'
-                        }}
-                    >
-                        <TextField
-                            sx={{
-                                width: 'calc(85% + 12px)'
-                            }}
-                            label="Category Name"
-                            name="name"
-                            value={formData.name}
-                            error={!!errorData.name}
-                            helperText={errorData.name}
-                            onChange={handleChange}
-                        />
-                        <TextField
-                    style={{
-                        width: 'calc(25% + 12px)'
+            <DialogContent>
+                <Stack
+                    spacing={6}
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{
+                        marginBottom: '20px'
                     }}
+                >
+                    <TextField
+                        sx={{
+                            width: 'calc(85% + 12px)'
+                        }}
+                        label="Category Name"
+                        name="name"
+                        value={formData.name}
+                        error={!!errorData.name}
+                        helperText={errorData.name}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        style={{
+                            width: 'calc(25% + 12px)'
+                        }}
                         variant="outlined"
                         name="percentage"
                         label="Percentage"
                         onChange={handleChange}
                         value={formData.percentage}
                         InputProps={{
-                            endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                            endAdornment: (formData.percentage === "" ? <InputAdornment position="end">%</InputAdornment> : null),
                             inputComponent: NumberFormatCustom,
                             inputProps: {
                                 maxinput: allowedPercentage
                             }
                         }}
                     />
-                        <Alert
-                            severity="info"
-                            sx={{
-                                width: 'calc(85% + 12px)'
-                            }}
-                        >
-                            <strong>Unallocated Percentage</strong> — {allowedPercentage}%
-                        </Alert>
-                    </Stack>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        type="submit"
-                        onClick={handleSubmit}
-                        color="secondary"
-                        variant="outlined"
+                    <Alert
+                        severity="info"
                         sx={{
-                            bgcolor: 'primary.light',
-                            width: '100px',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginBottom: '10px'
+                            width: 'calc(85% + 12px)'
                         }}
                     >
-                        <Typography
-                            sx={{
-                                color: 'text.primary'
-                            }}
-                        >
-                            Save
-                        </Typography>
-                    </Button>
-                </DialogActions>
+                        <strong>Unallocated Percentage</strong> — {allowedPercentage}%
+                    </Alert>
+                </Stack>
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    type="submit"
+                    onClick={handleSubmit}
+                    color="secondary"
+                    variant="outlined"
+                    sx={{
+                        bgcolor: 'primary.light',
+                        width: '100px',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginBottom: '10px'
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            color: 'text.primary'
+                        }}
+                    >
+                        Save
+                    </Typography>
+                </Button>
+            </DialogActions>
         </form>
     )
 }

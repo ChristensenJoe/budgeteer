@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import {
+    useState,
+    forwardRef
+} from 'react'
 
 import {
     useSelector,
     useDispatch
 } from 'react-redux'
+
+import NumberFormat from 'react-number-format'
+import PropTypes from 'prop-types'
 
 import {
     DialogContent,
@@ -19,6 +25,33 @@ import {
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 import { userSet } from '../../Redux/Slices/userSlice'
 
+const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={ref}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value
+                    }
+                })
+            }}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            thousandSeparator={true}
+            allowNegative={true}
+        />
+    );
+});
+
+NumberFormatCustom.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+}
 
 function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
     const dispatch = useDispatch();
@@ -95,8 +128,8 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
             response.json()
                 .then(data => {
                     data.errors.forEach((error) => {
-                        let errorName = error.split(" ")[0].toLowerCase() ;
-                        
+                        let errorName = error.split(" ")[0].toLowerCase();
+
                         setErrorData(errorData => ({
                             ...errorData,
                             [errorName]: error
@@ -136,17 +169,19 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
                             onChange={handleChange}
                         />
                         <TextField
-                            sx={{
+                            style={{
                                 width: '30%'
                             }}
-                            label="Amount"
+                            variant="outlined"
                             name="amount"
+                            label="Amount"
+                            onChange={handleChange}
                             error={!!errorData.amount}
                             helperText={errorData.amount}
                             value={formData.amount}
-                            onChange={handleChange}
                             InputProps={{
-                                startAdornment: <InputAdornment position="start">$</InputAdornment>
+                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                inputComponent: NumberFormatCustom
                             }}
                         />
                     </Stack>

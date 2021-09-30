@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import {
+    useState,
+    forwardRef
+} from 'react'
 
 import {
     useSelector,
     useDispatch
 } from 'react-redux'
+
+import NumberFormat from 'react-number-format'
+import PropTypes from 'prop-types'
 
 import {
     DialogContent,
@@ -26,6 +32,34 @@ import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { userSet } from '../../Redux/Slices/userSlice'
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 
+
+const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={ref}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value
+                    }
+                })
+            }}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            thousandSeparator={true}
+            allowNegative={true}
+        />
+    );
+});
+
+NumberFormatCustom.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+}
 
 function NewMoneyTransferForm({ setIsOpen }) {
     const dispatch = useDispatch();
@@ -153,7 +187,7 @@ function NewMoneyTransferForm({ setIsOpen }) {
                                     dispatch(userSet({
                                         ...user,
                                         unallocated_balance: Number.parseFloat(user.unallocated_balance) +
-                                        Number.parseFloat(newFromTransfer.amount) 
+                                            Number.parseFloat(newFromTransfer.amount)
                                     }))
                                 }
                                 if (toCategory.name !== "Unallocated Balance") {
@@ -166,7 +200,7 @@ function NewMoneyTransferForm({ setIsOpen }) {
                                     dispatch(userSet({
                                         ...user,
                                         unallocated_balance: Number.parseFloat(user.unallocated_balance) +
-                                        Number.parseFloat(newToTransfer.amount) 
+                                            Number.parseFloat(newToTransfer.amount)
                                     }))
                                 }
                                 setIsOpen((isOpen) => !isOpen)
@@ -251,18 +285,20 @@ function NewMoneyTransferForm({ setIsOpen }) {
                     }}
                 >
                     <TextField
-                        sx={{
+                        style={{
                             width: '30%',
                             marginBottom: '20px'
                         }}
-                        label="Amount"
+                        variant="outlined"
                         name="amount"
+                        label="Amount"
+                        onChange={handleChange}
                         error={!!errorData.amount}
                         helperText={errorData.amount}
                         value={formData.amount}
-                        onChange={handleChange}
                         InputProps={{
-                            startAdornment: <InputAdornment position="start">$</InputAdornment>
+                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                            inputComponent: NumberFormatCustom
                         }}
                     />
                     <FormControl
