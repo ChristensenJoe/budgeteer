@@ -38,7 +38,6 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
         if (value <= maxinput) return true;
         return false;
     }
-    console.log(maxinput)
 
     return (
         <NumberFormat
@@ -53,6 +52,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
                 })
             }}
             decimalScale={0}
+            suffix={'%'}
             allowNegative={false}
             isAllowed={withValueCap}
         />
@@ -168,8 +168,7 @@ function NewCategoryForm({ setIsOpen }) {
                         onChange={handleChange}
                         value={formData.percentage}
                         InputProps={{
-                            endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                            inputComponent: NumberFormatCustom,
+                            endAdornment: (formData.percentage === "" ? <InputAdornment position="end">%</InputAdornment> : null),
                             inputProps: {
                                 maxinput: allowedPercentage
                             }

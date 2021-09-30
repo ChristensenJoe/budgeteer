@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useState,
+forwardRef } from 'react'
 
 import {
     useDispatch,
     useSelector
 } from 'react-redux'
+
+import NumberFormat from 'react-number-format'
+import PropTypes from 'prop-types'
 
 import {
     TextField,
@@ -15,10 +19,39 @@ import {
     Grid,
     Stack,
     Button,
-    Alert
+    Alert,
+    InputAdornment
 } from '@mui/material'
 
 import { userSet } from '../../Redux/Slices/userSlice'
+
+const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={ref}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value
+                    }
+                })
+            }}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            thousandSeparator={true}
+            allowNegative={true}
+        />
+    );
+});
+
+NumberFormatCustom.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+}
 
 function SettingsPaymentForm() {
     const dispatch = useDispatch();
@@ -86,13 +119,15 @@ function SettingsPaymentForm() {
                     >
                         <TextField
                             fullWidth
+                            variant="outlined"
+                            name="amount"
+                            label="Paycheck Amount"
                             onChange={handleChange}
                             value={formData.amount}
-                            sx={{
-
+                            InputProps={{
+                                startAdornment:  <InputAdornment position="start">$</InputAdornment>,
+                                inputComponent: NumberFormatCustom
                             }}
-                            label="Paycheck Amount"
-                            name="amount"
                         />
                         <FormControl
                             fullWidth
