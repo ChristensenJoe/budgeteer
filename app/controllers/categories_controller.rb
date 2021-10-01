@@ -19,18 +19,30 @@ class CategoriesController < ApplicationController
   def update
     category = @user.categories.find(params[:id])
     category.update!(category_params)
-    render json: category, serializer: CategorySpecificsSerializer, status: :accepted
+    if params[:position]
+      render json: category, status: :accepted
+    else
+      render json: category, serializer: CategorySpecificsSerializer, status: :accepted
+    end
   end
 
   def destroy
-    Category.find(params[:id]).destroy
+    categories = @user.categories.order(position: :asc);
+    removed_category = Category.find(params[:id])
+
+    for position in removed_category.position..categories.last.position do
+      category_at_position = categories.find { |category| category.position == position}
+      category_at_position.update!(position: position-1)
+    end
+    removed_category.destroy()
+
     head :no_content
   end
 
   private
 
   def category_params
-    params.permit(:name, :percentage)
+    params.permit(:name, :percentage, :position)
   end
 
   def not_found_response

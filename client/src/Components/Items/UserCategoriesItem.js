@@ -1,7 +1,15 @@
 import {
+    useState
+} from 'react'
+
+import {
     useHistory,
     useLocation
 } from 'react-router-dom'
+
+import {
+    Draggable
+} from 'react-beautiful-dnd';
 
 import {
     Stack,
@@ -9,14 +17,18 @@ import {
     Typography,
     Button,
     styled,
-    alpha
+    alpha,
+    IconButton
 } from '@mui/material'
 
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 
-function UserCategoriesItem({ name, balance, percentage, id }) {
+
+function UserCategoriesItem({ name, balance, percentage, id, index }) {
     const location = useLocation();
     const history = useHistory();
+
 
     const routeName = name.split(" ").join("-").toLowerCase();
 
@@ -31,11 +43,11 @@ function UserCategoriesItem({ name, balance, percentage, id }) {
         {...props}
     />;
 
-    const StyledButtonRoute = styled(ButtonRoute)(({ theme}) => ({
+    const StyledButtonRoute = styled(ButtonRoute)(({ theme }) => ({
         'fontFamily': theme.fontFamily,
         '&:hover': {
             backgroundColor: alpha(theme.palette.primary.main, 0.2)
-        }, 
+        },
         '> .MuiTouchRipple-root span': {
             backgroundColor: alpha(theme.palette.primary.main, 0.8)
         }
@@ -51,69 +63,123 @@ function UserCategoriesItem({ name, balance, percentage, id }) {
     return (
         <Box
             sx={{
-                width: '90%'
+                width: '90%',
+                marginLeft: 'auto',
+                marginRight: 'auto'
             }}
-            component={StyledButtonRoute}
-            onClick={handleClick}
         >
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                sx={{
-                    width: '100%'
-                }}
+            <Draggable
+                draggableId={id.toString()}
+                index={index}
             >
-                <Stack>
-                    <Typography
-                        sx={{
-                            paddingLeft: '50px',
-                            fontWeight: 500,
-                            fontSize: {
-                                xs: '1.8rem',
-                                sm: '1.9rem',
-                                md: '1.45rem',
-                                lg: '2.2rem'
-                            }
-                        }}
+                {(provided, snapshot) => (
+                    <Box
+                        borderRadius={2}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        sx={snapshot.isDragging ? {
+                            width: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            backgroundColor: theme => alpha(theme.palette.primary.main, 0.4)
+                        }
+                            :
+                            {
+                                width: '100%',
+                                marginLeft: 'auto',
+                                marginRight: 'auto'
+                            }}
                     >
-                        {name}
-                    </Typography>
-                    <Typography
-                        sx={{
-                            paddingLeft: '50px',
-                            fontWeight: 400,
-                            fontSize: {
-                                xs: '1.4rem',
-                                sm: '1.6rem',
-                                md: '1.5rem',
-                                lg: '1.8rem'
-                            }
-                        }}
-                    >
-                        {percentage * 100}%
-                    </Typography>
-                </Stack>
-                <Stack
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <Typography
-                        sx={{
-                            paddingRight: '50px',
-                            fontWeight: 500,
-                            fontSize: {
-                                xs: '1.95rem',
-                                sm: '2.2rem',
-                                md: '2.3rem',
-                                lg: '2.5rem'
-                            }
-                        }}
-                    >
-                        {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'}).format(balance)}
-                    </Typography>
-                </Stack>
-            </Stack>
-        </Box>
+                        <Stack
+                            direction="row"
+                        >
+                            <IconButton
+                                {...provided.dragHandleProps}
+                                sx={{
+                                    '&:hover': {
+                                        backgroundColor: 'transparent'
+                                    }
+                                }}
+                            >
+                                <DragIndicatorIcon
+                                />
+                            </IconButton>
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                sx={{
+                                    width: '100%'
+                                }}
+                                component={StyledButtonRoute}
+                                onClick={handleClick}
+                            >
+                                <Stack>
+                                    <Typography
+                                        sx={{
+                                            paddingLeft: '10px',
+                                            fontWeight: 500,
+                                            fontSize: {
+                                                xs: '1.8rem',
+                                                sm: '1.9rem',
+                                                md: '1.45rem',
+                                                lg: '2.2rem'
+                                            }
+                                        }}
+                                    >
+                                        {name}
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            paddingLeft: '10px',
+                                            fontWeight: 400,
+                                            fontSize: {
+                                                xs: '1.4rem',
+                                                sm: '1.6rem',
+                                                md: '1.5rem',
+                                                lg: '1.8rem'
+                                            }
+                                        }}
+                                    >
+                                        {Number.parseInt(percentage * 100)}%
+                                    </Typography>
+                                </Stack>
+                                <Stack
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    <Typography
+                                        sx={{
+                                            paddingRight: '20px',
+                                            fontWeight: 500,
+                                            fontSize: {
+                                                xs: '1.95rem',
+                                                sm: '2.2rem',
+                                                md: '2.3rem',
+                                                lg: '2.5rem'
+                                            }
+                                        }}
+                                    >
+                                        {Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(balance)}
+                                    </Typography>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                        {!snapshot.isDragging &&
+                            <Box
+                                borderRadius="16px"
+                                sx={{
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    width: '100%',
+                                    height: '1px',
+                                    bgcolor: 'secondary.main'
+                                }}
+                            />
+                        }
+                    </Box>
+                )}
+            </Draggable>
+            </Box>
     )
 }
 

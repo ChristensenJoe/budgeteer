@@ -16,8 +16,8 @@ class User < ApplicationRecord
     self.paycheck.paydates.create!(paydate: Date.parse("01"))
     self.paycheck.paydates.create!(paydate: Date.parse("15"))
 
-    self.categories.create!(name: "Savings", percentage: 0.2)
-    self.categories.create!(name: "Spending", percentage: 0.1)
+    self.categories.create!(name: "Savings", percentage: 0.2, position: 1)
+    self.categories.create!(name: "Spending", percentage: 0.1, position: 2)
   end
 
   def self.automated_paycheck
@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
       user.paydates.each do |paydate|
         current_date = paydate.paydate.day
-
+        
         if today == current_date
           leftover_percentage = 1.0 - user.total_percentage
           new_unallocated_balance = user.unallocated_balance + (user.paycheck.amount * leftover_percentage)
