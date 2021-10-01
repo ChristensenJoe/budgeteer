@@ -44,7 +44,7 @@ function Category() {
             .then(setCategory)
     }, [location.state, user.id])
 
-
+    console.log(category);
     return <>
         <Container>
             {category ? <Box
@@ -147,7 +147,7 @@ function Category() {
                                 }
                             }}
                         >
-                            {category.percentage * 100}%
+                            {Number.parseInt(category.percentage * 100)}%
                         </Typography>
                     </Stack>
                     <Stack

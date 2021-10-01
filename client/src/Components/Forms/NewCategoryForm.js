@@ -94,11 +94,14 @@ function NewCategoryForm({ setIsOpen }) {
             name: ""
         })
 
+        let sortedCategories = JSON.parse(JSON.stringify(categories))
+    sortedCategories.sort((a, b) => a.position - b.position)
+
         const newFormData = {
             ...formData,
-            percentage: Number.parseInt(formData.percentage)/100
+            percentage: Number.parseInt(formData.percentage)/100,
+            position: categories[sortedCategories.length - 1].position+1
         }
-
         
         const response = await fetch(`/users/${user.id}/categories`, {
             method: 'POST',
@@ -135,6 +138,8 @@ function NewCategoryForm({ setIsOpen }) {
     }
 
     const allowedPercentage = Math.floor((100-(categories.reduce((total, category) => Number.parseFloat(category.percentage)+total, 0)*100)))
+    
+    console.log(allowedPercentage);
 
     return (
         <form>
@@ -160,7 +165,7 @@ function NewCategoryForm({ setIsOpen }) {
                     />
                     <TextField
                     style={{
-                        width: 'calc(25% + 12px)'
+                        width: 'calc(45% + 12px)'
                     }}
                         variant="outlined"
                         name="percentage"
@@ -169,6 +174,7 @@ function NewCategoryForm({ setIsOpen }) {
                         value={formData.percentage}
                         InputProps={{
                             endAdornment: (formData.percentage === "" ? <InputAdornment position="end">%</InputAdornment> : null),
+                            inputComponent: NumberFormatCustom,
                             inputProps: {
                                 maxinput: allowedPercentage
                             }
