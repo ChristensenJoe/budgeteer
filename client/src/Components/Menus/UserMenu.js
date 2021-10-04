@@ -26,9 +26,11 @@ import ListIcon from '@mui/icons-material/List';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PieChartOutlineIcon from '@mui/icons-material/PieChartOutline';
 
 import NewMoneyTransferDialog from '../Dialogs/NewMoneyTransferDialog'
 import NewTransactionDialog from '../Dialogs/NewTransactionDialog';
+import AllocateCategoryPercentageDialog from '../Dialogs/AllocateCategoryPercentageDialog'
 
 function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
 
@@ -38,6 +40,7 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
     const [isCollapseOpen, setIsCollapseOpen] = useState(false);
     const [isTransferOpen, setIsTransferOpen] = useState(false);
     const [isTransactionOpen, setIsTransactionOpen] = useState(false);
+    const [isAllocateCategoryPercentageOpen, setIsAllocateCategoryPercentageOpen] = useState(false)
 
     function handleCloseMenu() {
         setAnchorEl(null);
@@ -166,6 +169,17 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
                     }
                 </Collapse>
                 <MenuItem
+                    onClick={() => {
+                        handleCloseMenu()
+                        setIsAllocateCategoryPercentageOpen((isAllocateCategoryPercentageOpen) => !isAllocateCategoryPercentageOpen)
+                    }}
+                >
+                    <ListItemIcon>
+                        <PieChartOutlineIcon fontSize="small" />
+                    </ListItemIcon>
+                    Allocate Categories
+                </MenuItem>
+                <MenuItem
                     component={NavLink}
                     onClick={handleCloseMenu}
                     to={`/${user.username.split(" ").join("")}/transactions`}
@@ -183,6 +197,10 @@ function UserMenu({ isOpen, anchorEl, setAnchorEl }) {
             <NewTransactionDialog
                 isOpen={isTransactionOpen}
                 setIsOpen={setIsTransactionOpen}
+            />
+            <AllocateCategoryPercentageDialog 
+                isOpen={isAllocateCategoryPercentageOpen}
+                setIsOpen={setIsAllocateCategoryPercentageOpen}
             />
         </>
     )
