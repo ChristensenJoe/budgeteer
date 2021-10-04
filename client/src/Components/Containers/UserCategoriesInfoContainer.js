@@ -41,12 +41,33 @@ function UserCategoriesInfoContainer() {
 
         if (!result.destination) return;
 
-        const startingPosition = result.source.index+1;
-        const endingPosition = result.destination.index+1;
+        const startingPosition = result.source.index + 1;
+        const endingPosition = result.destination.index + 1;
+        const movingPosition = sortedCategories[result.source.index];
 
-        sortedCategories[result.source.index].position = endingPosition;
-        sortedCategories[result.destination.index].position = startingPosition;
+        let greaterIndex;
+        let lesserIndex;
+        if (Math.sign(startingPosition - endingPosition) === -1) {
+            greaterIndex = endingPosition-1;
+            lesserIndex = startingPosition-1;
 
+            console.log("hi")
+            for (let i = lesserIndex; i <= greaterIndex; i++) {
+                console.log(sortedCategories[i], sortedCategories[i].position-1)
+                sortedCategories[i].position = sortedCategories[i].position-1;
+            }
+            movingPosition.position = endingPosition
+        }
+        else {
+            greaterIndex = startingPosition-1;
+            lesserIndex = endingPosition-1;
+
+            for (let i = lesserIndex; i <= greaterIndex; i++) {
+                console.log(i)
+                sortedCategories[i].position = sortedCategories[i].position+1;
+            }
+            movingPosition.position = endingPosition
+        }
         sortedCategories.sort((a, b) => a.position - b.position)
 
         sortedCategories.forEach(async (category) => {
