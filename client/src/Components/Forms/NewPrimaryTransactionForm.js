@@ -19,8 +19,12 @@ import {
     Stack,
     Typography,
     InputAdornment,
-    Autocomplete
+    Autocomplete,
+    IconButton
 } from "@mui/material"
+
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 import { userSet } from '../../Redux/Slices/userSlice'
@@ -43,7 +47,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
             decimalScale={2}
             fixedDecimalScale={true}
             thousandSeparator={true}
-            allowNegative={true}
+            allowNegative={false}
         />
     );
 });
@@ -61,6 +65,7 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
+        type: false,
         amount: "",
         categories: [],
         primary_category: category.name
@@ -84,7 +89,6 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
             [name]: value
         }))
     }
-
     async function handleSubmit(e) {
         e.preventDefault();
 
@@ -94,12 +98,20 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
             amount: ""
         })
 
+        let newFormData = JSON.parse(JSON.stringify(formData))
+        if(!newFormData.type) {
+            newFormData = {
+                ...newFormData,
+                amount: (Number.parseFloat(newFormData.amount)*-1).toString()
+            }
+        }
+        console.log(newFormData)
         const response = await fetch(`/users/${user.id}/payments`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(newFormData)
         });
 
         if (response.ok) {
@@ -108,7 +120,7 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
                     setCategory((category) => {
                         const newCategory = {
                             ...category,
-                            balance: Number.parseFloat(category.balance) + Number.parseFloat(formData.amount),
+                            balance: Number.parseFloat(category.balance) + Number.parseFloat(newFormData.amount),
                             payments: [
                                 newTransaction,
                                 ...category.payments
@@ -119,7 +131,7 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
                     })
                     dispatch(userSet({
                         ...user,
-                        total_balance: Number.parseFloat(user.total_balance) + Number.parseFloat(formData.amount)
+                        total_balance: Number.parseFloat(user.total_balance) + Number.parseFloat(newFormData.amount)
                     }))
                     setIsOpen((isOpen) => !isOpen)
                 })
@@ -155,11 +167,11 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
                         justifyContent="space-between"
                         alignItems="center"
                         direction="row"
-                        spacing={6}
                     >
                         <TextField
                             sx={{
-                                width: '55%'
+                                width: '50%',
+                                mr: '50px'
                             }}
                             label="Transaction Name"
                             name="name"
@@ -168,6 +180,28 @@ function NewPrimaryTransactionForm({ setIsOpen, category, setCategory }) {
                             value={formData.name}
                             onChange={handleChange}
                         />
+                        <IconButton
+                            color={formData.type ? "primary" : "error"}
+                            onClick={() => {setFormData((formData) => ({
+                                ...formData,
+                                type: !formData.type
+                            }))}}
+                        >
+                            {
+                                formData.type ? <AddIcon  
+                                sx={{
+                                    height: '30px',
+                                    width: '30px'
+                                }}
+                                /> : 
+                                <RemoveIcon 
+                                sx={{
+                                    height: '30px',
+                                    width: '30px'
+                                }}
+                                />
+                            }
+                        </IconButton>
                         <TextField
                             style={{
                                 width: '30%'

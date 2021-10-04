@@ -16,6 +16,7 @@ import {
     DialogActions,
     TextField,
     Button,
+    IconButton,
     Stack,
     Typography,
     InputAdornment,
@@ -25,6 +26,9 @@ import {
     Select,
     MenuItem
 } from "@mui/material"
+
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import { categoriesUpdated } from '../../Redux/Slices/categoriesSlice'
 import { transactionsAdded } from '../../Redux/Slices/transactionsSlice'
@@ -49,7 +53,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
             decimalScale={2}
             fixedDecimalScale={true}
             thousandSeparator={true}
-            allowNegative={true}
+            allowNegative={false}
         />
     );
 });
@@ -65,12 +69,16 @@ function NewTransactionForm({ setIsOpen }) {
     const categories = useSelector((state) => state.categories.entities);
     const recentTransactions = useSelector((state) => state.recentTransactions.entities);
 
+    let sortedCategories = JSON.parse(JSON.stringify(categories));
+    sortedCategories.sort((a, b) => a.position - b.position);
+
     const [formData, setFormData] = useState({
         name: "",
         description: "",
+        type: false,
         amount: "",
         categories: [],
-        primary_category: categories[0].name
+        primary_category: sortedCategories[0].name
     })
 
     const [errorData, setErrorData] = useState({
@@ -111,12 +119,19 @@ function NewTransactionForm({ setIsOpen }) {
             amount: ""
         })
 
+        let newFormData = JSON.parse(JSON.stringify(formData))
+        if(!newFormData.type) {
+            newFormData = {
+                ...newFormData,
+                amount: (Number.parseFloat(newFormData.amount)*-1).toString()
+            }
+        }
         const response = await fetch(`/users/${user.id}/payments`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(newFormData)
         });
         if (response.ok) {
             response.json()
@@ -175,11 +190,11 @@ function NewTransactionForm({ setIsOpen }) {
                         justifyContent="space-between"
                         alignItems="center"
                         direction="row"
-                        spacing={6}
                     >
                         <TextField
                             sx={{
-                                width: '55%'
+                                width: '50%',
+                                mr: '50px'
                             }}
                             label="Transaction Name"
                             name="name"
@@ -188,6 +203,28 @@ function NewTransactionForm({ setIsOpen }) {
                             value={formData.name}
                             onChange={handleChange}
                         />
+                        <IconButton
+                            color={formData.type ? "primary" : "error"}
+                            onClick={() => {setFormData((formData) => ({
+                                ...formData,
+                                type: !formData.type
+                            }))}}
+                        >
+                            {
+                                formData.type ? <AddIcon  
+                                sx={{
+                                    height: '30px',
+                                    width: '30px'
+                                }}
+                                /> : 
+                                <RemoveIcon 
+                                sx={{
+                                    height: '30px',
+                                    width: '30px'
+                                }}
+                                />
+                            }
+                        </IconButton>
                         <TextField
                             style={{
                                 width: '30%'
