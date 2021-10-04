@@ -9,8 +9,7 @@ import {
 
 import {
     DragDropContext,
-    Droppable,
-    Draggable
+    Droppable
 } from 'react-beautiful-dnd'
 
 import {
@@ -51,7 +50,7 @@ function UserCategoriesInfoContainer() {
         sortedCategories.sort((a, b) => a.position - b.position)
 
         sortedCategories.forEach(async (category) => {
-            let response = await fetch(`/users/${user.id}/categories/${category.id}`, {
+            await fetch(`/users/${user.id}/categories/${category.id}`, {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json'

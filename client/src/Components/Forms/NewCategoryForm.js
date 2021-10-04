@@ -95,9 +95,14 @@ function NewCategoryForm({ setIsOpen }) {
         })
 
         let sortedCategories = JSON.parse(JSON.stringify(categories))
-    sortedCategories.sort((a, b) => a.position - b.position)
+        sortedCategories.sort((a, b) => a.position - b.position)
 
-        const newFormData = {
+        let newFormData;
+        formData.percentage === "" ? newFormData = {
+            ...formData,
+            percentage: 0.0,
+            position: categories[sortedCategories.length - 1].position+1
+        } : newFormData = {
             ...formData,
             percentage: Number.parseInt(formData.percentage)/100,
             position: categories[sortedCategories.length - 1].position+1

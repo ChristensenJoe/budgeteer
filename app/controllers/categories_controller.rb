@@ -13,7 +13,7 @@ class CategoriesController < ApplicationController
 
   def create
     category = @user.categories.create!(category_params)
-    render json: category, status: :created
+    render json: category, serializer: CategorySpecificsSerializer, status: :created
   end
 
   def update
