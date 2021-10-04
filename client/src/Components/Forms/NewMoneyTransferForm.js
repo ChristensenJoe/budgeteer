@@ -51,7 +51,7 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
             decimalScale={2}
             fixedDecimalScale={true}
             thousandSeparator={true}
-            allowNegative={true}
+            allowNegative={false}
         />
     );
 });
