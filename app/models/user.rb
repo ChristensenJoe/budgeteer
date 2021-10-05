@@ -2,6 +2,7 @@ require "Date"
 
 class User < ApplicationRecord
   has_secure_password
+  before_create :confirmation_token
   validates :username, :email, :password_confirmation, presence: true, on: :create
   validates :username, :email, uniqueness: true
 
@@ -52,5 +53,17 @@ class User < ApplicationRecord
     percentage
   end
 
+  def email_activate
+    self.email_confirmed = true
+    self.confirm_token = nil
+    save!(:validate => false)
+  end
+
   private
+
+  def confirmation_token
+    if self.confirm_token.blank?
+      self.confirm_token = SecureRandom.urlsafe_base64.to_s
+    end
+  end
 end
