@@ -14,7 +14,7 @@ import {
     Stack
 } from '@mui/material'
 
-import { 
+import {
     useDispatch
 } from 'react-redux';
 
@@ -64,8 +64,18 @@ function SignupForm() {
         if (response.ok) {
             response.json()
                 .then(user => {
-                    dispatch(userSet(user))
-                    history.push(`/${user.username}`)
+                    if (user.status) {
+                        history.push({
+                            pathname: '/login',
+                            state: {
+                                emailConfirmNeeded: true
+                            }
+                        })
+                    }
+                    else {
+                        dispatch(userSet(user))
+                        history.push(`/${user.username}`)
+                    }
                 })
         }
         else {
@@ -75,9 +85,9 @@ function SignupForm() {
                         let errorName
                         (error.split(" ")[1] === 'confirmation') ?
                             errorName = "password_confirmation"
-                            : 
-                            errorName = error.split(" ")[0].toLowerCase() ;
-                        
+                            :
+                            errorName = error.split(" ")[0].toLowerCase();
+
                         setErrorData(errorData => ({
                             ...errorData,
                             [errorName]: error

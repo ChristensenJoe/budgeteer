@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
   resources :users, only: [:update] do
+    member do
+      get :confirm_email
+    end
     resources :paychecks, only: [:update, :index]
     resources :categories
     resources :payments, only: [:create, :destroy, :index]

@@ -4,6 +4,7 @@ import {
 
 import {
     NavLink,
+    useLocation,
     useHistory
 } from 'react-router-dom'
 
@@ -12,7 +13,8 @@ import {
     Typography,
     TextField,
     Button,
-    Stack
+    Stack,
+    Alert
 } from '@mui/material'
 
 import { 
@@ -23,7 +25,13 @@ import { userSet } from '../../Redux/Slices/userSlice'
 
 function LoginForm() {
     const dispatch = useDispatch()
-    const history = useHistory()
+    const location = useLocation();
+    const history = useHistory();
+
+    let initialIsConfirmed;
+    location.state ? initialIsConfirmed = location.state.emailConfirmNeeded : initialIsConfirmed = false
+
+    const [isConfirmedEmail, setIsConfirmedEmail] = useState(initialIsConfirmed);
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -60,6 +68,7 @@ function LoginForm() {
                 response.json()
                     .then(data => {
                         setErrorData(data.errors)
+                        setIsConfirmedEmail(false);
                     })
             }
     }
@@ -83,17 +92,6 @@ function LoginForm() {
             <form
                 onSubmit={handleSubmit}
             >
-                {
-                        !!errorData && (
-                            <Typography
-                                color="error"
-                                variant="body1"
-                                sx={{
-                                    marginBottom: '20px'
-                                }}
-                            >{errorData}</Typography>
-                        )
-                    }
                 <Stack
                     spacing={6}
                     justifyContent="center"
@@ -102,6 +100,17 @@ function LoginForm() {
                         marginBottom: '20px'
                     }}
                 >
+                    {
+                        !!errorData && (
+                            <Alert
+                                severity="error"
+                            >{errorData}</Alert>
+                        )
+                    }
+                    { isConfirmedEmail && 
+                    <Alert severity="warning">
+                        Confirm Email and Login
+                    </Alert>}
                     <TextField
                         sx={{
                             width: 'calc(85% + 12px)'
