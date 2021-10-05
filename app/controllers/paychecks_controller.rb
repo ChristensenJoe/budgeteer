@@ -1,4 +1,4 @@
-require "Date"
+require "date"
 
 class PaychecksController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response

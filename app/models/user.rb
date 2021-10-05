@@ -1,4 +1,4 @@
-require "Date"
+require "date"
 
 class User < ApplicationRecord
   has_secure_password
