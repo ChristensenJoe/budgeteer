@@ -22,7 +22,7 @@ import {
 } from '@mui/material'
 
 import { userSet } from '../../Redux/Slices/userSlice'
-import logo from '../../Assets/logo-placeholder.png'
+import logo from '../../Assets/logo-icon.png'
 import UserMenu from '../Menus/UserMenu'
 
 function Header() {
@@ -65,7 +65,7 @@ function Header() {
                             sx={{
                                 height: '100px',
                                 width: '100px',
-                                textAlign: 'center'
+                                marginRight: '20px',                                textAlign: 'center'
                             }}
                         >
                             <img

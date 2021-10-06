@@ -1,13 +1,11 @@
 import {
-    //useParams
-} from 'react-router-dom'
-
-import {
     Container,
     Grid,
     styled,
     Box
 } from '@mui/material'
+
+import FadeIn from 'react-fade-in'
 
 
 import UserBalanceInfoContainer from '../Components/Containers/UserBalanceInfoContainer'
@@ -46,6 +44,10 @@ function Dashboard() {
                             item
                             xs={12}
                         >
+                            <FadeIn
+                                delay={300}
+                                transitionDuration={1200}
+                            >
                             <InfoContainer
                                 borderRadius={12}
                                 sx={{
@@ -55,20 +57,26 @@ function Dashboard() {
                             >
                                 <UserBalanceInfoContainer />
                             </InfoContainer>
+                            </FadeIn>
                         </Grid>
                         <Grid
                             item
                             xs={12}
                         >
+                            <FadeIn
+                                delay={200}
+                                transitionDuration={1200}
+                            >
                             <InfoContainer
                                 borderRadius={12}
                                 sx={{
-                                    minHeight: '400px',
+                                    minHeight: '440px',
                                     width: '100%'
                                 }}
                             >
                                 <UserRecentTransactionsInfoContainer />
                             </InfoContainer>
+                            </FadeIn>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -78,15 +86,20 @@ function Dashboard() {
                     sm={12}
                     md={7}
                 >
+                    <FadeIn
+                    delay={300}
+                    transitionDuration={1200}
+                    >
                     <InfoContainer
                         borderRadius={12}
                         sx={{
-                            minHeight: '1000px',
+                            minHeight: '800px',
                             width: '100%'
                         }}
                     >
                         <UserCategoriesInfoContainer />
                     </InfoContainer>
+                    </FadeIn>
                 </Grid>
             </Grid>
         </Container>

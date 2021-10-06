@@ -90,6 +90,7 @@ function UserCategoriesItem({ name, balance, percentage, id, index }) {
                             direction="row"
                         >
                             <IconButton
+                                disableRipple={true}
                                 {...provided.dragHandleProps}
                                 sx={{
                                     '&:hover': {

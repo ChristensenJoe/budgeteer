@@ -1,7 +1,10 @@
 import {
     Grid,
-    Box,
+    Stack
 } from '@mui/material'
+
+import FadeIn from 'react-fade-in'
+import logo from '../Assets/big-logo.png'
 
 import SignupForm from '../Components/Forms/SignupForm'
 
@@ -11,6 +14,14 @@ function Signup() {
         <Grid
             container
             sx={{
+                marginTop: {
+                    xs: '50px',
+                    sm: '50px',
+                    md: '150px',
+                    lg: '150px',
+                    xl: '150px'
+                },
+                marginBottom: '50px'
             }}
         >
             <Grid
@@ -18,32 +29,51 @@ function Signup() {
                 sm={8}
                 xs={12}
             >
-                <Box
+                <Stack
                     sx={{
+                        height: '100%',
+                        width: '100%'
                     }}
+                    justifyContent="center"
+                    alignItems="center"
                 >
-                    test
-                </Box>
+                    <FadeIn
+                        delay={200}
+                        transitionDuration={1000}
+                    >
+                        <img
+                            sx={{
+                                marginTop: 'auto',
+                                marginBottom: 'auto',
+                            }}
+                            src={logo}
+                            alt="Budgeteer Logo"
+                        />
+                    </FadeIn>
+                </Stack>
             </Grid>
             <Grid
                 item
                 sm={4}
                 xs={12}
             >
-                <Box
+                <Stack
                     sx={{
+                        marginTop: {
+                            xs: '40px',
+                            sm: '40px'
+                        }
                     }}
+                    justifyContent="center"
+                    alignItems="center"
                 >
-                    <Box
-                        sx={{ 
-                            marginTop: '200px',
-                            height: '500px',
-                            width: '300px'
-                        }}
+                    <FadeIn
+                        delay={400}
+                        transitionDuration={1400}
                     >
-                        <SignupForm />
-                    </Box>
-                </Box>
+                    <SignupForm />
+                    </FadeIn>
+                </Stack>
             </Grid>
         </Grid>
     )

@@ -25,6 +25,7 @@ import Header from './Components/Headers/Header'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
 import Settings from './Pages/Settings'
+import Homepage from './Pages/Homepage'
 
 function App() {
   const dispatch = useDispatch();
@@ -71,7 +72,7 @@ function App() {
             //history.push("/")
           }
           <Route exact path="/">
-            <h1>Homepage</h1>
+            <Homepage />
           </Route>
         </Switch>
       </ThemeProvider>
