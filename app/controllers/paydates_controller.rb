@@ -1,2 +1,3 @@
 class PaydatesController < ApplicationController
+    
 end
