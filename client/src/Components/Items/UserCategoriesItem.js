@@ -14,7 +14,8 @@ import {
     Button,
     styled,
     alpha,
-    IconButton
+    IconButton,
+    Tooltip
 } from '@mui/material'
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
@@ -111,20 +112,34 @@ function UserCategoriesItem({ name, balance, percentage, id, index }) {
                                 onClick={handleClick}
                             >
                                 <Stack>
-                                    <Typography
+                                    <Tooltip
+                                        title={name}
+                                        placement="bottom"
                                         sx={{
-                                            paddingLeft: '10px',
-                                            fontWeight: 500,
-                                            fontSize: {
-                                                xs: '1.8rem',
-                                                sm: '1.9rem',
-                                                md: '1.45rem',
-                                                lg: '2.2rem'
-                                            }
+                                            minWidth: '30%',
+                                            maxWidth: '30%'
                                         }}
                                     >
-                                        {name}
-                                    </Typography>
+                                        <Typography
+                                            noWrap
+                                            sx={{
+                                                paddingLeft: '10px',
+                                                fontWeight: 500,
+                                                maxWidth: {
+                                                    sm: '500px',
+                                                    xs: '100px'
+                                                },
+                                                fontSize: {
+                                                    xs: '1.8rem',
+                                                    sm: '1.9rem',
+                                                    md: '1.45rem',
+                                                    lg: '2.2rem'
+                                                }
+                                            }}
+                                        >
+                                            {name}
+                                        </Typography>
+                                    </Tooltip>
                                     <Typography
                                         sx={{
                                             paddingLeft: '10px',
@@ -176,7 +191,7 @@ function UserCategoriesItem({ name, balance, percentage, id, index }) {
                     </Box>
                 )}
             </Draggable>
-            </Box>
+        </Box>
     )
 }
 

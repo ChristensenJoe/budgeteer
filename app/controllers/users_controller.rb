@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     user = User.create!(user_params)
     UserMailer.registration_confirmation(user).deliver
     user.set_up_first_user
-    session[:user_id] = user.id
+    #session[:user_id] = user.id
     # render json: user, include: ['paycheck', 'paycheck.paydates'], status: :created
     render json: { status: ["Confirm Email"]}, status: :created
   end
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     if user
       user.email_activate
       
-      redirect_to "https://budgeteer-finance.herokuapp.com"
+      redirect_to "https://budgeteer-finance.herokuapp.com/login"
     else
       redirect_to "https://budgeteer-finance.herokuapp.com"
     end

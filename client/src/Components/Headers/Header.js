@@ -24,6 +24,7 @@ import {
 import { userSet } from '../../Redux/Slices/userSlice'
 import logo from '../../Assets/logo-icon.png'
 import UserMenu from '../Menus/UserMenu'
+import createTypography from '@mui/material/styles/createTypography'
 
 function Header() {
     const history = useHistory();
@@ -34,7 +35,7 @@ function Header() {
     const isOpen = Boolean(anchorEl);
 
     function handleLogout() {
-        fetch('/logout', {
+        fetch('/api/logout', {
             method: "DELETE"
         });
         dispatch(userSet(false));
@@ -63,9 +64,15 @@ function Header() {
                             component={NavLink}
                             to="/"
                             sx={{
-                                height: '100px',
-                                width: '100px',
-                                marginRight: '20px',                                textAlign: 'center'
+                                height: {
+                                    sm: '100px',
+                                    xs: '40px'
+                                },
+                                width: {
+                                    sm: '100px',
+                                    xs: '40px'
+                                },
+                                marginRight: '20px', textAlign: 'center'
                             }}
                         >
                             <img
@@ -79,10 +86,13 @@ function Header() {
                             />
                         </Box>
                         <Typography
-                            variant="h4"
                             sx={{
                                 flexGrow: 1,
-                                fontWeight: 'medium'
+                                fontWeight: 'medium',
+                                fontSize: {
+                                    sm: '3rem',
+                                    xs: '1.2rem'
+                                }
                             }}
                         >
                             Budgeteer
@@ -97,10 +107,14 @@ function Header() {
                                     }}
                                 >
                                     <Typography
-                                        variant="h6"
+                                        noWrap
                                         sx={{
                                             fontWeight: 'medium',
-                                            color: 'text.primary'
+                                            color: 'text.primary',
+                                            fontSize: {
+                                                sm: '1.2rem',
+                                                xs: '1rem'
+                                            }
                                         }}
                                     >
                                         {user.username}
@@ -117,7 +131,11 @@ function Header() {
                                         variant="h6"
                                         sx={{
                                             fontWeight: 'medium',
-                                            color: 'text.primary'
+                                            color: 'text.primary',
+                                            fontSize: {
+                                                sm: '1.2rem',
+                                                xs: '1rem'
+                                            }
                                         }}
                                     >
                                         Logout
@@ -131,10 +149,13 @@ function Header() {
                                 to="/login"
                             >
                                 <Typography
-                                    variant="h6"
                                     sx={{
                                         fontWeight: 'medium',
-                                        color: 'text.primary'
+                                        color: 'text.primary',
+                                        fontSize: {
+                                            sm: '1.2rem',
+                                            xs: '1rem'
+                                        }
                                     }}
                                 >
                                     Login
