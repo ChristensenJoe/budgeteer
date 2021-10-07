@@ -45,8 +45,8 @@ function Dashboard() {
                             xs={12}
                         >
                             <FadeIn
-                                delay={300}
-                                transitionDuration={1200}
+                                delay={500}
+                                transitionDuration={1900}
                             >
                             <InfoContainer
                                 borderRadius={12}
@@ -64,8 +64,8 @@ function Dashboard() {
                             xs={12}
                         >
                             <FadeIn
-                                delay={200}
-                                transitionDuration={1200}
+                                delay={1200}
+                                transitionDuration={1900}
                             >
                             <InfoContainer
                                 borderRadius={12}
@@ -87,8 +87,8 @@ function Dashboard() {
                     md={7}
                 >
                     <FadeIn
-                    delay={300}
-                    transitionDuration={1200}
+                    delay={2000}
+                    transitionDuration={1900}
                     >
                     <InfoContainer
                         borderRadius={12}

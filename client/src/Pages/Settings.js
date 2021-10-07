@@ -7,6 +7,8 @@ import {
     styled
 } from '@mui/material'
 
+import FadeIn from 'react-fade-in'
+
 import SettingsPaymentContainer from '../Components/Containers/SettingsPaymentContainer'
 import SettingsAccountContainer from '../Components/Containers/SettingsAccountContainer'
 import SettingsUserContainer from '../Components/Containers/SettingsUserContainer'
@@ -35,30 +37,35 @@ function Settings() {
                     sm={12}
                     xs={12}
                 >
-                    <Stack
-                        spacing={5}
-                        justifyContent="center"
-                        alignItems="center"
+                    <FadeIn
+                        delay={200}
+                        transitionDuration={1200}
                     >
-                        <InfoContainer
-                            borderRadius={12}
-                            sx={{
-                                height: '400px',
-                                width: '100%'
-                            }}
+                        <Stack
+                            spacing={5}
+                            justifyContent="center"
+                            alignItems="center"
                         >
-                            <SettingsPaymentContainer />
-                        </InfoContainer>
-                        <InfoContainer
-                            borderRadius={12}
-                            sx={{
-                                height: '400px',
-                                width: '100%'
-                            }}
-                        >
-                            <SettingsAccountContainer />
-                        </InfoContainer>
-                    </Stack>
+                            <InfoContainer
+                                borderRadius={12}
+                                sx={{
+                                    height: '400px',
+                                    width: '100%'
+                                }}
+                            >
+                                <SettingsPaymentContainer />
+                            </InfoContainer>
+                            <InfoContainer
+                                borderRadius={12}
+                                sx={{
+                                    height: '400px',
+                                    width: '100%'
+                                }}
+                            >
+                                <SettingsAccountContainer />
+                            </InfoContainer>
+                        </Stack>
+                    </FadeIn>
                 </Grid>
                 <Grid
                     item
@@ -66,15 +73,20 @@ function Settings() {
                     sm={12}
                     xs={12}
                 >
-                    <InfoContainer
-                        borderRadius={12}
-                        sx={{
-                            minHeight: '850px',
-                            width: '100%'
-                        }}
+                    <FadeIn
+                        delay={200}
+                        transitionDuration={1200}
                     >
-                        <SettingsUserContainer />
-                    </InfoContainer>
+                        <InfoContainer
+                            borderRadius={12}
+                            sx={{
+                                minHeight: '850px',
+                                width: '100%'
+                            }}
+                        >
+                            <SettingsUserContainer />
+                        </InfoContainer>
+                    </FadeIn>
                 </Grid>
             </Grid>
         </Container>
