@@ -177,7 +177,10 @@ function Category() {
                                         sx={{
                                             color: 'text.primary',
                                             fontWeight: 500,
-                                            fontSize: '1rem'
+                                            fontSize: {
+                                                sm: '1rem',
+                                                xs: '0.8rem'
+                                            }
                                         }}
                                     >
                                         New Transaction

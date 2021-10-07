@@ -1,6 +1,7 @@
 import {
     Grid,
-    Stack
+    Stack,
+    Box
 } from '@mui/material'
 
 import FadeIn from 'react-fade-in'
@@ -26,7 +27,8 @@ function Signup() {
         >
             <Grid
                 item
-                sm={8}
+                md={8}
+                sm={12}
                 xs={12}
             >
                 <Stack
@@ -41,20 +43,37 @@ function Signup() {
                         delay={200}
                         transitionDuration={1000}
                     >
-                        <img
+                        <Box
                             sx={{
-                                marginTop: 'auto',
-                                marginBottom: 'auto',
+                                width: '55vw',
+                                height: 'auto',
+                                overflow: 'auto',
+                                mt: {
+                                    xs: '-20px',
+                                    sm: '-20px',
+                                    md: '-40px',
+                                    lg: '-60px',
+                                    xl: '-60px'
+                                },
+                                float: 'right',
+                                textAlign: 'right',
+                                "& img": {
+                                    width: '100%'
+                                }
                             }}
+                        >
+                        <img
                             src={logo}
                             alt="Budgeteer Logo"
                         />
+                        </Box>
                     </FadeIn>
                 </Stack>
             </Grid>
             <Grid
                 item
-                sm={4}
+                md={4}
+                sm={12}
                 xs={12}
             >
                 <Stack

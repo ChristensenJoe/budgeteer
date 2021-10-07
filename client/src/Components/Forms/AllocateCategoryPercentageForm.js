@@ -182,7 +182,7 @@ function AllocateCategoryPercentageForm({ setIsOpen }) {
                         type="pie"
                         width={
                             isXS ?
-                                "400"
+                                "300"
                                 :
                                 "500"
                         }
