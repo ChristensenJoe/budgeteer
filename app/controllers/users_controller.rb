@@ -20,9 +20,9 @@ class UsersController < ApplicationController
     if user
       user.email_activate
       
-      redirect_to "https://budgeteer-finance.herokuapp.com/login"
+      redirect_to "https://budgeteer-finance.herokuapp.com"
     else
-      redirect_to "https://budgeteer-finance.herokuapp.com/"
+      redirect_to "https://budgeteer-finance.herokuapp.com"
     end
   end
 

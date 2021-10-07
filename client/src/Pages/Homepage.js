@@ -41,6 +41,7 @@ function Homepage() {
         const scrollEvent = (e) => {
             var scrollTop = e.path[1].window.pageYOffset
             console.log(scrollTop);
+            console.log(e.path[1].window)
             if (isXS) {
                 console.log("xs")
                 if (scrollTop > 212) {
