@@ -12,6 +12,11 @@ Budgeteer is a money budgeting and transaction tracking tool. Features include a
 
 *Note: Any feature that uses cronjobs is not available on the hosted version*
 
+
+### For Wireframes and ERD's please go to the Notion page here:
+
+[Notion Page](https://joechristensen.notion.site/Budgeteer-db1d6fc6067646e4be1fe6adb2178b63)
+
 ## Features
 
 #### Account Creation
