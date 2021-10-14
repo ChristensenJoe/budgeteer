@@ -4,7 +4,7 @@
   <img src="https://i.ibb.co/fFJ3rrV/header-logo-removebg-preview.png">  
 </p>
 
-Budgeteer is a money budgetting and transaction tracking tool. Features include account creation, email confirmation, money categorization, transaction logging, and paycheck allocation.
+Budgeteer is a money budgeting and transaction tracking tool. Features include account creation, email confirmation, money categorization, transaction logging, and paycheck allocation.
 
 ### A live version of Budgetter is deployed with heroku and running here:
 
