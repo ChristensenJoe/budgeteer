@@ -6,6 +6,12 @@
 
 Budgeteer is a money budgetting and transaction tracking tool. Features include account creation, email confirmation, money categorization, transaction logging, and paycheck allocation.
 
+### A live version of Budgetter is deployed with heroku and running here:
+
+[Live Version](https://budgeteer-finance.herokuapp.com)
+
+*Note: Any feature that uses cronjobs is not available on the hosted version*
+
 ## Features
 
 #### Account Creation
@@ -38,31 +44,63 @@ Along with setting up payperiods and paycheck ammounts, Budgeteer has automatic 
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+**1. Clone the repository to your local maching**
 
-```bash
-pip install foobar
-```
+After cloning, make sure you have Ruby installed.
 
-## Usage
+**2. Navigate into the root folder and run the build commands**
 
-```python
-import foobar
+  To install all ruby gems:
+  ```
+  $ bundle install
+  ```
+  
+  To install all node packages:
+  ```
+  $ npm install --prefix client
+  ```
 
-# returns 'words'
-foobar.pluralize('word')
+**3. Add the necessary environment variables**
 
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
+  Budgeteer makes use of the [Figaro gem](https://github.com/laserlemon/figaro) to handle environment variables.
+  
+  First run this command:
+  ```
+  $ bundle exec figaro install
+  ```
+  
+  It will create a `/config/application.yml` file.
+  
+  Navigate to this file and add the following:
+  
+  ```ruby
+  GMAIL_USERNAME: 'valid-username'
+  GMAIL_PASSWORD: 'valid-password'
+  ```
+  
+  Replace [valid-username] and [valid-password] with the username and password of a gmail account that you want ActionMailer to use   for the email authentication delivery process.
+  
+  **4. Start the crontab**
+  
+  Budgeteer makes use of the [Whenever gem](https://github.com/javan/whenever) to handle configuring the cronjobs.
+  
+  Run this to update the crontab with the contents of `config/schedule.rb`:
+  ```
+  $ whenever --update-crontab
+  ```
+  
+  **5. Start up the servers**
+  
+  Run this to start up the Rails backend:
+  ```
+  $ rails server
+  ```
+  
+  Then, in another terminal, run this to start up the React frontend:
+  ```
+  $ npm start --prefix client
+  ```
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+Pull requests are welcome. 
