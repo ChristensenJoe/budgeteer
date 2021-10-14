@@ -45,7 +45,10 @@ function Login() {
                     >
                         <Box
                             sx={{
-                                width: '55vw',
+                                width: {
+                                    xs: '55vw',
+                                    lg: '48vw'
+                                },
                                 height: 'auto',
                                 overflow: 'auto',
                                 mt: {
