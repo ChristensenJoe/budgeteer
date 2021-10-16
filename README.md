@@ -108,4 +108,4 @@ After cloning, make sure you have Ruby installed.
 
 ## Contributing
 
-Pull requests are welcome. 
+Forking and cloning is welcome, but please provide attribution to the author.
